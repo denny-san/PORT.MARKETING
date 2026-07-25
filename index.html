@@ -68,6 +68,16 @@
       animation: scan 4s linear infinite;
     }
 
+    @keyframes welcome-exit {
+      0%, 70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
     .glitch-text::after {
       content: attr(data-text);
       position: absolute;

@@ -1,17 +1,18 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
-import About from './pages/About';
-import Skills from './pages/Skills';
-import Experience from './pages/Experience';
-import Certifications from './pages/Certifications';
-import CV from './pages/CV';
-import Contact from './pages/Contact';
 import WhatsAppButton from './components/WhatsAppButton';
 import CursorSpark from './components/CursorSpark';
-import LoadingScreen from './components/LoadingScreen';
-import Projects from './pages/Projects';
+import WelcomeScreen from './components/WelcomeScreen';
+
+const About = React.lazy(() => import('./pages/About'));
+const Skills = React.lazy(() => import('./pages/Skills'));
+const Experience = React.lazy(() => import('./pages/Experience'));
+const Projects = React.lazy(() => import('./pages/Projects'));
+const Certifications = React.lazy(() => import('./pages/Certifications'));
+const CV = React.lazy(() => import('./pages/CV'));
+const Contact = React.lazy(() => import('./pages/Contact'));
 
 const NavLinks = [
   { name: 'Home', path: '/' },
@@ -105,24 +106,16 @@ const Footer = () => (
 );
 
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 4500);
-    return () => clearTimeout(timer);
-  }, []);
+  const [showWelcome, setShowWelcome] = React.useState(true);
 
   return (
     <HashRouter>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : (
-        <div className="relative flex min-h-screen w-full flex-col font-display bg-background-dark text-white">
-          <CursorSpark />
-          <Header />
-          <main className="flex-1 overflow-x-hidden">
+      {showWelcome && <WelcomeScreen onFinish={() => setShowWelcome(false)} />}
+      <div className="relative flex min-h-screen w-full flex-col font-display bg-background-dark text-white">
+        <CursorSpark />
+        <Header />
+        <main className="flex-1 overflow-x-hidden">
+          <Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center font-mono text-sm text-primary">CARGANDO SECCIÓN...</div>}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -133,11 +126,11 @@ const App: React.FC = () => {
               <Route path="/cv" element={<CV />} />
               <Route path="/contact" element={<Contact />} />
             </Routes>
-          </main>
-          <WhatsAppButton />
-          <Footer />
-        </div>
-      )}
+          </Suspense>
+        </main>
+        <WhatsAppButton />
+        <Footer />
+      </div>
     </HashRouter>
   );
 };

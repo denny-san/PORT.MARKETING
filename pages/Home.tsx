@@ -5,13 +5,13 @@ import Terminal from '../components/Terminal';
 
 const Home: React.FC = () => {
   return (
-    <div className="relative px-4 py-8 md:py-20 lg:py-28 overflow-hidden">
+    <div className="relative min-h-[calc(100vh-73px)] overflow-hidden px-4 py-8 md:py-20 lg:py-28">
       {/* Background photo (grayscale, low opacity) */}
-      <div className="absolute inset-0 opacity-40 bg-center bg-cover mix-blend-luminosity">
+      <div className="absolute inset-0 opacity-40 mix-blend-luminosity">
         <img
           src="/IMG/DENNY IMG.jpg"
           alt="Background Denny"
-          className="wabsolute inset-0 opacity-40 bg-center bg-cover mix-blend-luminosity"
+          className="h-full w-full object-cover object-center"
         />
       </div>
       {/* Background Decor */}
