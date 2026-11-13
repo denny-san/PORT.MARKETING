@@ -19,7 +19,7 @@ const About: React.FC = () => {
   return (
     <>
       <PageHeader
-        index="S"
+        index="01"
         label="Sobre mí"
         title={
           <>
@@ -29,7 +29,7 @@ const About: React.FC = () => {
         intro="Marketing Manager y diseñador gráfico con base en Azua de Compostela, República Dominicana."
       />
 
-      <section className="py-20 md:py-28">
+      <section className="pt-12 md:pt-16 pb-20 md:pb-28">
         <Container>
           <div className="grid grid-cols-12 gap-y-12 md:gap-x-10">
             <Reveal className="col-span-12 md:col-span-5 lg:col-span-4">
@@ -67,7 +67,7 @@ const About: React.FC = () => {
                 <Button to="/cv" variant="outline">
                   Ver CV
                 </Button>
-                <Button to="/projects" variant="outline">
+                <Button to="#proyectos" variant="outline">
                   Ver proyectos
                 </Button>
               </Reveal>
@@ -79,7 +79,7 @@ const About: React.FC = () => {
       <section className="border-t border-line py-20 md:py-28">
         <Container>
           <Reveal>
-            <Eyebrow index="01">Cómo trabajo</Eyebrow>
+            <Eyebrow index="1.1">Cómo trabajo</Eyebrow>
           </Reveal>
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-px bg-line border-y border-line">
             {principles.map((p, i) => (
@@ -97,7 +97,7 @@ const About: React.FC = () => {
         <Container>
           <div className="grid grid-cols-12 gap-y-14 md:gap-x-10">
             <Reveal className="col-span-12 md:col-span-6">
-              <Eyebrow index="02">Fortalezas</Eyebrow>
+              <Eyebrow index="1.2">Fortalezas</Eyebrow>
               <ul className="mt-8 border-t border-ink">
                 {strengths.map((s) => (
                   <li key={s} className="border-b border-line py-4 font-display text-[22px] font-medium tracking-tightish">
@@ -108,7 +108,7 @@ const About: React.FC = () => {
             </Reveal>
 
             <Reveal delay={80} className="col-span-12 md:col-span-5 md:col-start-8">
-              <Eyebrow index="03">Educación</Eyebrow>
+              <Eyebrow index="1.3">Educación</Eyebrow>
               <ul className="mt-8 border-t border-ink">
                 {education.map((e) => (
                   <li key={e.t} className="border-b border-line py-5">
@@ -122,7 +122,7 @@ const About: React.FC = () => {
               </ul>
 
               <div className="mt-12">
-                <Eyebrow index="04">Idiomas</Eyebrow>
+                <Eyebrow index="1.4">Idiomas</Eyebrow>
                 <dl className="mt-6 grid grid-cols-2 gap-6">
                   <div>
                     <dt className="font-display text-[20px] font-semibold tracking-tightish">Español</dt>

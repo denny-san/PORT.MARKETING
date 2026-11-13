@@ -36,7 +36,7 @@ const experiences = [
 const Experience: React.FC = () => (
   <>
     <PageHeader
-      index="E"
+      index="04"
       label="Experiencia"
       title={
         <>
@@ -46,7 +46,7 @@ const Experience: React.FC = () => (
       intro="Marketing digital, gestión de comunidades y estrategias de contenido para marcas locales y proyectos independientes."
     />
 
-    <section className="py-20 md:py-28">
+    <section className="pt-12 md:pt-16 pb-20 md:pb-28">
       <Container>
         <ol className="border-t border-ink">
           {experiences.map((exp, i) => (

@@ -11,16 +11,10 @@ export interface Campaign {
   tags: string[];
 }
 
-export interface Work {
-  slug: string;
-  title: string;
+export interface Work extends Campaign {
   category: 'Redes sociales' | 'Branding' | 'Web';
-  summary: string;
-  cover: string;
-  media: MediaItem[];
-  tags: string[];
-  /** Relación de aspecto de la miniatura */
-  ratio: 'portrait' | 'square' | 'landscape';
+  /** Anclar el recorte de miniaturas arriba (capturas de páginas web) */
+  alignTop?: boolean;
 }
 
 const ab = (folder: string, files: string[], alt: string): MediaItem[] =>
@@ -153,18 +147,23 @@ export const works: Work[] = [
   {
     slug: 'cindel',
     title: 'CINDEL',
+    titleAccent: 'social media',
+    format: 'Instagram · 7 piezas',
     category: 'Redes sociales',
-    summary: 'Gestión estratégica de Instagram y creación de contenido visual de alto impacto.',
+    summary:
+      'Gestión estratégica de la cuenta de Instagram y creación de contenido visual de alto impacto: piezas promocionales, comunicados y publicaciones de marca con una línea gráfica constante.',
     cover: '/CINDEL/FOTO1.png',
     media: imgs('CINDEL', ['FOTO1.png', 'FOTO2.png', 'FOTO3.png', 'FOTO4.png', 'FOTO5.png', 'FOTO6.png', 'FOTO7.png'], 'CINDEL'),
     tags: ['Instagram', 'Diseño gráfico', 'Canva'],
-    ratio: 'square',
   },
   {
     slug: 'novaweb',
     title: 'NOVAWEB',
+    titleAccent: 'studio',
+    format: 'Parrilla mensual · 11 piezas',
     category: 'Redes sociales',
-    summary: 'Perfil corporativo y diseño de la parrilla de contenidos mensual.',
+    summary:
+      'Administración del perfil corporativo y diseño de la parrilla de contenidos mensual: presentación de servicios, mensajes de marca y llamados a la acción en formato vertical para el feed.',
     cover: '/NOVAWEB/FOTO1.png',
     media: imgs(
       'NOVAWEB',
@@ -172,43 +171,52 @@ export const works: Work[] = [
       'NOVAWEB',
     ),
     tags: ['Estrategia digital', 'Copywriting', 'Figma'],
-    ratio: 'square',
   },
   {
     slug: 'musica',
-    title: 'Música App',
+    title: 'Música',
+    titleAccent: 'app',
+    format: 'Branding · 17 piezas',
     category: 'Branding',
-    summary: 'Identidad visual y branding para marcas del sector musical y entretenimiento.',
+    summary:
+      'Identidad visual y piezas de branding para marcas del sector musical y del entretenimiento: personajes, composiciones con color intenso y tipografía de impacto para captar atención en el feed.',
     cover: '/MUSICA/FOTO1.png',
     media: imgs('MUSICA', Array.from({ length: 17 }, (_, i) => `FOTO${i + 1}.png`), 'Música App'),
     tags: ['Branding', 'Figma', 'Canva'],
-    ratio: 'square',
   },
   {
     slug: 'comida',
-    title: 'Comida Express',
+    title: 'Comida',
+    titleAccent: 'express',
+    format: 'Promociones · 3 piezas',
     category: 'Redes sociales',
-    summary: 'Marketing gastronómico: comunidad y promociones para delivery.',
+    summary:
+      'Marketing gastronómico para delivery: gestión de comunidad y diseño de promociones con el producto como protagonista, precios visibles y mensajes directos que invitan a pedir.',
     cover: '/COMIDA/FOTO1.png',
     media: imgs('COMIDA', ['FOTO1.png', 'FOTO2.png', 'FOTO3.png'], 'Comida Express'),
     tags: ['Ads', 'Contenido', 'Canva'],
-    ratio: 'square',
   },
   {
     slug: 'restaurante',
-    title: 'Restaurante Gourmet',
+    title: 'Restaurante',
+    titleAccent: 'gourmet',
+    format: 'Sitio web · 5 pantallas',
     category: 'Web',
-    summary: 'Sitio web para restaurante con foco en menú, reservas y conversión.',
+    summary:
+      'Diseño de sitio web para restaurante con foco en la experiencia: fotografía apetitosa, menú claro, reservas visibles y una estructura pensada para convertir visitas en comensales.',
     cover: '/framer-screenshots/screen.png',
     media: imgs('framer-screenshots', ['screen.png', 'screen(1).png', 'screen(2).png', 'screen(3).png', 'screen(4).png'], 'Restaurante Gourmet'),
     tags: ['UX/UI', 'Diseño web'],
-    ratio: 'landscape',
+    alignTop: true,
   },
   {
     slug: 'salon',
-    title: 'Salón de Belleza & Spa',
+    title: 'Salón de belleza',
+    titleAccent: '& spa',
+    format: 'Landing page · 5 pantallas',
     category: 'Web',
-    summary: 'Landing de servicios y reservas para un salón de belleza.',
+    summary:
+      'Landing de servicios para un salón de belleza y spa: presentación de tratamientos, profesionales y llamados a reservar, con una estética cálida y elegante acorde al sector.',
     cover: '/framer-screenshots/unnamed (1).png',
     media: imgs(
       'framer-screenshots',
@@ -216,13 +224,16 @@ export const works: Work[] = [
       'Salón de Belleza & Spa',
     ),
     tags: ['UX/UI', 'Landing page'],
-    ratio: 'landscape',
+    alignTop: true,
   },
   {
     slug: 'portafolio',
-    title: 'Portafolio Personal',
+    title: 'Portafolio',
+    titleAccent: 'personal',
+    format: 'Sitio web · 6 pantallas',
     category: 'Web',
-    summary: 'Diseño y desarrollo de un portafolio personal multipágina.',
+    summary:
+      'Diseño y desarrollo de un portafolio personal multipágina: perfil, habilidades, experiencia, certificaciones y contacto, organizados para que un reclutador encuentre lo importante en segundos.',
     cover: '/framer-screenshots/01-home-desktop.png',
     media: imgs(
       'framer-screenshots',
@@ -237,7 +248,7 @@ export const works: Work[] = [
       'Portafolio Personal',
     ),
     tags: ['React', 'Diseño web'],
-    ratio: 'landscape',
+    alignTop: true,
   },
 ];
 

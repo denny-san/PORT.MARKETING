@@ -19,7 +19,7 @@ const Certifications: React.FC = () => {
   return (
     <>
       <PageHeader
-        index="F"
+        index="05"
         label="Formación"
         title={
           <>
@@ -29,7 +29,7 @@ const Certifications: React.FC = () => {
         intro="Certificaciones y cursos que respaldan mi trabajo en marketing digital, publicidad y diseño."
       />
 
-      <section className="py-20 md:py-28">
+      <section className="pt-12 md:pt-16 pb-20 md:pb-28">
         <Container>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-14">
             {certs.map((c, i) => (

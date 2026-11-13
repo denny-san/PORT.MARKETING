@@ -29,9 +29,9 @@ const Contact: React.FC = () => {
     <section className="pt-16 md:pt-28 pb-24 md:pb-32">
       <Container>
         <Reveal>
-          <Eyebrow index="H">Contacto</Eyebrow>
+          <Eyebrow index="06">Contacto</Eyebrow>
         </Reveal>
-        <Reveal as="h1" delay={80} className="mt-8 font-display font-semibold tracking-display leading-[0.9] text-[clamp(2.9rem,9vw,8.5rem)] text-balance">
+        <Reveal as="h2" delay={80} className="mt-8 font-display font-semibold tracking-display leading-[0.9] text-[clamp(2.9rem,9vw,8.5rem)] text-balance">
           Hablemos de tu <Accent>próximo</Accent> proyecto.
         </Reveal>
 

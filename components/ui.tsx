@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/** Desplazamiento suave a una sección de la página única. */
+export const scrollToId = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
 export const Container: React.FC<{ className?: string; children: React.ReactNode }> = ({ className = '', children }) => (
   <div className={`mx-auto w-full max-w-shell px-5 md:px-10 ${className}`}>{children}</div>
 );
@@ -68,7 +71,7 @@ export const PageHeader: React.FC<{
         <Eyebrow index={index}>{label}</Eyebrow>
       </Reveal>
       <div className="mt-8 grid grid-cols-12 gap-y-8 md:gap-x-10 items-end">
-        <Reveal as="h1" delay={80} className="col-span-12 lg:col-span-8 font-display font-semibold tracking-display leading-[0.92] text-[clamp(2.75rem,8vw,7rem)] text-balance">
+        <Reveal as="h2" delay={80} className="col-span-12 lg:col-span-8 font-display font-semibold tracking-display leading-[0.92] text-[clamp(2.75rem,8vw,7rem)] text-balance">
           {title}
         </Reveal>
         {intro && (
@@ -119,6 +122,12 @@ export const Button: React.FC<{
       {arrow}
     </>
   );
+  if (to?.startsWith('#'))
+    return (
+      <button type="button" onClick={() => scrollToId(to.slice(1))} className={cls}>
+        {content}
+      </button>
+    );
   if (to) return <Link to={to} className={cls}>{content}</Link>;
   if (href)
     return (

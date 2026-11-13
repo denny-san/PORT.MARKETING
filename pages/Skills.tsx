@@ -15,7 +15,7 @@ const tools = ['Canva Pro', 'Figma', 'Adobe', 'Meta Ads', 'Google Ads', 'Instagr
 const Skills: React.FC = () => (
   <>
     <PageHeader
-      index="C"
+      index="03"
       label="Servicios y capacidades"
       title={
         <>
@@ -25,7 +25,7 @@ const Skills: React.FC = () => (
       intro="Un conjunto de habilidades que une diseño gráfico, contenido y marketing de resultados."
     />
 
-    <section className="py-20 md:py-28">
+    <section className="pt-12 md:pt-16 pb-20 md:pb-28">
       <Container>
         <ol className="border-t border-ink">
           {skills.map((s, i) => (
@@ -51,7 +51,7 @@ const Skills: React.FC = () => (
       <Container>
         <div className="grid grid-cols-12 gap-y-10 md:gap-x-10">
           <Reveal className="col-span-12 md:col-span-4">
-            <Eyebrow index="01">Herramientas</Eyebrow>
+            <Eyebrow index="3.1">Herramientas</Eyebrow>
             <h2 className="mt-6 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2rem,4vw,3.5rem)]">
               Mi <Accent>caja</Accent> de trabajo
             </h2>
@@ -72,7 +72,7 @@ const Skills: React.FC = () => (
             ¿Listo para impulsar <Accent className="text-accent">tu marca</Accent>?
           </h2>
           <div className="col-span-12 md:col-span-4 md:justify-self-end">
-            <Button to="/contact" variant="accent">
+            <Button to="#contacto" variant="accent">
               Iniciar colaboración
             </Button>
           </div>
