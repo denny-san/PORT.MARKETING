@@ -1,26 +1,22 @@
 import React from 'react';
-import { Accent, Button, Container, Reveal, scrollToId } from '../components/ui';
-import { campaigns, works, url } from '../data/projects';
+import { Container, Reveal, Script, scrollToId } from '../components/ui';
+import { CloudEdge, Cross, Drop, Ring, Scribble, Sparkle, Squiggle, Star, Triangle } from '../components/Doodles';
 
-const disciplines = ['Diseño gráfico', 'Dirección de arte', 'Social media', 'Branding', 'Publicidad digital', 'Diseño web'];
+const disciplines = ['Diseño gráfico', 'Branding', 'Social media', 'Diseño web'];
 
-const totalPieces = [...campaigns, ...works].reduce((n, c) => n + c.media.length, 0);
-
-/** Portada de la página única: hero + franja de disciplinas. */
+/** Portada de la página única. */
 const Home: React.FC = () => {
-  // Parallax sutil del retrato
-  const imgRef = React.useRef<HTMLImageElement>(null);
+  // Parallax suave de los doodles con el scroll
+  const layer = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     let raf = 0;
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const y = Math.min(window.scrollY, 900);
-        if (imgRef.current) imgRef.current.style.transform = `translateY(${y * 0.08}px) scale(1.12)`;
+        if (layer.current) layer.current.style.transform = `translateY(${Math.min(window.scrollY, 900) * 0.25}px)`;
       });
     };
-    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
@@ -29,100 +25,89 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <section id="inicio" className="relative pt-10 md:pt-16 pb-16 md:pb-24">
-        <Container>
-          <Reveal className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-            <span>Marketing Manager · Diseñador gráfico</span>
-            <span className="hidden md:inline">Azua de Compostela, RD</span>
-            <span className="inline-flex items-center gap-2 text-ink">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2BB673] opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2BB673]" />
-              </span>
-              Disponible para proyectos
-            </span>
-          </Reveal>
+    <section id="inicio" className="relative overflow-hidden bg-night">
+      {/* Siluetas de fondo */}
+      <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-night-3/70 to-transparent" aria-hidden />
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="absolute inset-x-0 bottom-0 h-[38%] w-full text-night-2" aria-hidden>
+        <path
+          d="M0 320V190l90-90 70 70 110-130 120 140 80-60 140 120 100-110 120 100 90-70 130 120 120-140 100 90 90-60 70 70v150Z"
+          fill="currentColor"
+        />
+      </svg>
 
-          <h1 className="mt-12 md:mt-16 font-display font-semibold tracking-display leading-[0.9] text-[clamp(3.1rem,10.5vw,10.5rem)]">
-            <Reveal as="span" delay={60} className="block">
-              Diseño que <Accent>comunica</Accent>,
-            </Reveal>
-            <Reveal as="span" delay={180} className="block">
-              marketing que <Accent>convierte</Accent>
-              <span className="text-accent">.</span>
-            </Reveal>
+      <div ref={layer} className="pointer-events-none absolute inset-0 text-grape-2" aria-hidden>
+        <Sparkle className="absolute left-[8%] top-[16%] h-8 w-8 text-cream animate-twinkle" />
+        <Star className="absolute right-[12%] top-[14%] h-7 w-7 text-sun animate-twinkle [animation-delay:1s]" />
+        <Cross className="absolute left-[14%] top-[58%] h-9 w-9 animate-float" />
+        <Ring className="absolute right-[7%] top-[46%] h-12 w-12 animate-float-slow" />
+        <Triangle className="absolute left-[5%] top-[36%] h-8 w-8 opacity-70 animate-wiggle" />
+        <Drop className="absolute right-[20%] bottom-[28%] h-10 w-10 text-cream/70 animate-float" />
+        <Scribble className="absolute left-[24%] top-[9%] h-8 w-16 opacity-70" />
+        <Sparkle className="absolute right-[30%] top-[8%] h-4 w-4 text-cream animate-twinkle [animation-delay:.6s]" />
+      </div>
+
+      <Container className="relative pt-16 md:pt-24 pb-28 md:pb-40 flex flex-col items-center text-center">
+        <Reveal>
+          <span className="inline-flex items-center gap-2 rounded-full border-2 border-cream/15 bg-night-2/80 px-4 py-1.5 text-[13px] font-medium text-cream/80">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ADE80] opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4ADE80]" />
+            </span>
+            Disponible para proyectos
+          </span>
+        </Reveal>
+
+        {/* Logotipo PORTAFOLIO */}
+        <Reveal delay={120} className="relative mt-10 md:mt-14 select-none">
+          <h1 className="relative leading-none" aria-label="Portafolio de Denny Sánchez">
+            <span className="block font-display font-black tracking-[-0.05em] text-[clamp(4.2rem,16vw,13rem)] text-cream [text-shadow:0_8px_0_#302D38]">
+              PORT<span className="text-grape">A</span>
+            </span>
+            <span className="block -mt-[0.32em] ml-[0.6em] font-script font-bold text-[clamp(4.6rem,17vw,14rem)] text-cream -rotate-3 [text-shadow:0_8px_0_#302D38]">
+              folio
+            </span>
           </h1>
+          <span className="absolute -right-2 md:-right-10 top-[4%] rotate-[14deg] rounded-xl bg-grape px-3 py-1 font-display text-[clamp(.95rem,1.8vw,1.4rem)] font-extrabold text-white shadow-[0_6px_0_#5B3FA8]">
+            2026
+          </span>
+          <Sparkle className="absolute -left-6 md:-left-12 bottom-[22%] h-8 w-8 md:h-12 md:w-12 text-sun animate-twinkle" />
+          <Squiggle className="absolute left-[12%] -bottom-4 h-5 w-40 md:w-64 text-grape-2" />
+        </Reveal>
 
-          <div className="mt-14 md:mt-20 grid grid-cols-12 gap-y-10 md:gap-x-10 items-end">
-            <Reveal delay={260} className="col-span-5 md:col-span-3">
-              <div className="aspect-[4/5] overflow-hidden rounded-[4px] bg-paper-2">
-                <img
-                  ref={imgRef}
-                  src={url('/IMG/IMG DENNY.jpeg')}
-                  alt="Retrato de Denny Sánchez"
-                  className="h-full w-full object-cover will-change-transform"
-                  style={{ transform: 'scale(1.12)' }}
-                />
-              </div>
-            </Reveal>
+        <Reveal delay={260} className="mt-8 md:mt-10">
+          <Script className="text-[clamp(2rem,4.5vw,3.4rem)] text-grape-2 inline-block -rotate-2">Denny Sánchez</Script>
+          <p className="mt-3 text-[15px] md:text-[17px] text-cream/70">Marketing Manager & Diseñador Gráfico · Azua, República Dominicana</p>
+        </Reveal>
 
-            <Reveal delay={320} className="col-span-12 md:col-span-5 md:col-start-5">
-              <p className="font-display text-[clamp(1.35rem,2.2vw,1.75rem)] leading-[1.3] tracking-tightish text-pretty">
-                Soy Denny Sánchez. Creo contenido visual y estrategias digitales para marcas que quieren{' '}
-                <Accent className="text-[1.08em]">conectar de verdad</Accent> con su comunidad.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button to="#proyectos">Ver proyectos</Button>
-                <Button to="#contacto" variant="outline">
-                  Contacto
-                </Button>
-              </div>
-            </Reveal>
-
-            <Reveal delay={380} className="col-span-12 md:col-span-3 md:col-start-10">
-              <dl className="grid grid-cols-3 md:grid-cols-1 gap-6 md:gap-0 md:divide-y md:divide-line">
-                {[
-                  ['3+', 'años de experiencia'],
-                  [String(campaigns.length + works.length), 'proyectos'],
-                  [String(totalPieces), 'piezas diseñadas'],
-                ].map(([n, l]) => (
-                  <div key={l} className="md:py-4 first:md:pt-0 flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
-                    <dt className="order-2 md:order-1 text-[13px] text-muted leading-snug">{l}</dt>
-                    <dd className="order-1 md:order-2 font-display text-[32px] md:text-[40px] font-semibold tracking-display leading-none">{n}</dd>
-                  </div>
-                ))}
-              </dl>
-            </Reveal>
-          </div>
-
-          <button
-            onClick={() => scrollToId('sobre-mi')}
-            className="group mt-16 md:mt-24 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted hover:text-ink transition-colors"
-          >
-            <span className="relative block h-10 w-px overflow-hidden bg-line">
-              <span className="absolute inset-x-0 top-0 h-1/2 bg-ink animate-[scroll-cue_1.8s_ease-in-out_infinite]" />
-            </span>
-            Desliza para ver todo
-          </button>
-        </Container>
-      </section>
-
-      <section aria-label="Disciplinas" className="bg-ink text-paper overflow-hidden py-6 md:py-8">
-        <div className="flex w-max animate-marquee">
-          {[0, 1].map((k) => (
-            <div key={k} className="flex shrink-0 items-center" aria-hidden={k === 1}>
-              {disciplines.map((d) => (
-                <span key={d} className="flex items-center font-display text-[clamp(1.75rem,4vw,3.25rem)] font-medium tracking-display whitespace-nowrap">
-                  <span className="px-6 md:px-10">{d}</span>
-                  <span className="font-serif italic text-accent">✳</span>
-                </span>
-              ))}
-            </div>
+        <Reveal delay={360} className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-[15px] md:text-[17px] font-medium text-cream/85">
+          {disciplines.slice(0, 2).map((d) => (
+            <button key={d} onClick={() => scrollToId('proyectos')} className="link-u">
+              {d}
+            </button>
           ))}
-        </div>
-      </section>
-    </>
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-cream text-night font-script text-[26px] font-bold -rotate-6 shadow-[0_5px_0_#8B5CF6]">
+            DS
+          </span>
+          {disciplines.slice(2).map((d) => (
+            <button key={d} onClick={() => scrollToId('proyectos')} className="link-u">
+              {d}
+            </button>
+          ))}
+        </Reveal>
+
+        <button
+          onClick={() => scrollToId('sobre-mi')}
+          className="mt-16 md:mt-20 flex flex-col items-center gap-3 text-[13px] font-medium text-cream/60 hover:text-cream transition-colors"
+        >
+          <Script className="text-[22px] text-grape-2">desliza para ver todo</Script>
+          <span className="relative block h-12 w-[2px] overflow-hidden rounded bg-cream/15">
+            <span className="absolute inset-x-0 top-0 h-1/2 bg-grape-2 animate-[scroll-cue_1.8s_ease-in-out_infinite]" />
+          </span>
+        </button>
+      </Container>
+
+      <CloudEdge className="absolute inset-x-0 -bottom-px h-10 md:h-16 w-full text-night-2" />
+    </section>
   );
 };
 

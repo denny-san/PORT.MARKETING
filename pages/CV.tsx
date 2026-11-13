@@ -83,7 +83,7 @@ const H: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 const Dash = () => <span className="mt-[0.62em] h-px w-2.5 shrink-0 bg-ink/40" aria-hidden />;
 
 const CV: React.FC = () => (
-  <section className="bg-paper-2/60 py-10 md:py-16 print:p-0 print:bg-white">
+  <section className="bg-paper-2 text-ink py-10 md:py-16 print:p-0 print:bg-white">
     <Container className="print:max-w-none print:px-0">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4 print:hidden">
         <div>

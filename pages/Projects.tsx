@@ -1,276 +1,321 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Accent, Button, Container, Eyebrow, PageHeader, Reveal, Tag, scrollToId } from '../components/ui';
+import { Container, Reveal, Script, SectionTitle, Tag, scrollToId } from '../components/ui';
+import { CloudEdge, Cross, DoodleField, Dots, Ring, Sparkle, Squiggle, Star } from '../components/Doodles';
 import { useLightbox } from '../components/Lightbox';
-import { aguaBuena, campaigns, works, url, Campaign, MediaItem } from '../data/projects';
+import { aguaBuena, campaigns, works, url, themeOf, Campaign } from '../data/projects';
 
 type Project = Campaign & { alignTop?: boolean };
 
-/* ------------------------------------------------------------ Bloque de proyecto (igual para todos) */
+const social = works.filter((w) => w.category !== 'Web') as Project[];
+const web = works.filter((w) => w.category === 'Web') as Project[];
 
-const ProjectBlock: React.FC<{ p: Project; i: number; total: number; onOpen: (idx: number) => void }> = ({
-  p,
-  i,
-  total,
-  onOpen,
-}) => {
-  const visible = p.media.slice(0, 6);
-  const extra = p.media.length - visible.length;
+const chapters = [
+  {
+    id: 'cap-agua-buena',
+    n: 1,
+    title: 'Agua',
+    script: 'Buena',
+    blurb: 'Campañas para redes',
+    items: campaigns as Project[],
+    intro: aguaBuena.intro,
+    meta: [
+      ['Cliente', 'Agua Buena — agua mineralizada'],
+      ['Rol', aguaBuena.role],
+      ['Entregables', aguaBuena.deliverables],
+    ],
+  },
+  {
+    id: 'cap-marcas',
+    n: 2,
+    title: 'Redes &',
+    script: 'Branding',
+    blurb: 'Marcas y cuentas',
+    items: social,
+    intro: 'Gestión de cuentas, parrillas de contenido mensuales, promociones e identidad visual para marcas de distintos sectores.',
+  },
+  {
+    id: 'cap-web',
+    n: 3,
+    title: 'Diseño',
+    script: 'Web',
+    blurb: 'Sitios y landings',
+    items: web,
+    intro: 'Diseño UX/UI de sitios web y landing pages con foco en claridad, identidad y conversión.',
+  },
+];
 
+/* ------------------------------------------------------------ Índice: cartas en abanico */
+
+const ContentCards = () => {
+  const fan = [
+    { t: 'translate(-8%, 18px) rotate(-14deg)', h: 'translate(-8%, 0) rotate(-10deg)' },
+    { t: 'translate(0, -10px) rotate(0deg)', h: 'translate(0, -26px) rotate(0deg)' },
+    { t: 'translate(8%, 18px) rotate(14deg)', h: 'translate(8%, 0) rotate(10deg)' },
+  ];
   return (
-    <article id={p.slug} className="scroll-mt-24 grid grid-cols-12 gap-y-10 md:gap-x-10 py-16 md:py-24 border-t border-paper/10">
-      <div className="col-span-12 lg:col-span-4">
-        <div className="lg:sticky lg:top-28">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/50">
-            {String(i + 1).padStart(2, '0')} / {String(total).padStart(2, '0')} · {p.format}
-          </p>
-          <h3 className="mt-5 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2rem,4vw,3.5rem)]">
-            {p.title} <Accent className="text-accent">{p.titleAccent}</Accent>
-          </h3>
-          <p className="mt-6 text-[16px] leading-relaxed text-paper/70 max-w-md text-pretty">{p.summary}</p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {p.tags.map((t) => (
-              <Tag key={t} dark>
-                {t}
-              </Tag>
-            ))}
+    <Reveal className="fan mt-14 md:mt-16 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0">
+      {chapters.map((c, i) => (
+        <button
+          key={c.id}
+          onClick={() => scrollToId(c.id)}
+          style={{ ['--fan' as any]: fan[i].t, ['--fan-hover' as any]: fan[i].h }}
+          className={`relative w-[250px] md:w-[270px] shrink-0 rounded-[24px] p-3 text-left shadow-[0_30px_60px_-24px_rgba(0,0,0,.8)] md:-mx-3 ${
+            i === 1 ? 'z-10 bg-grape text-white' : 'bg-cream text-night'
+          }`}
+        >
+          <div className={`rounded-[16px] p-5 h-[300px] flex flex-col ${i === 1 ? 'bg-grape-3/60' : 'bg-night text-cream'}`}>
+            <div className="flex items-start justify-between">
+              <span className="font-display text-[56px] font-black leading-none">{c.n}</span>
+              <Dots className={`h-3 w-9 ${i === 1 ? 'text-white/70' : 'text-grape-2'}`} />
+            </div>
+            <p className="mt-3 font-display text-[30px] font-extrabold leading-[0.95] tracking-tight">
+              {c.title}
+              <br />
+              <Script className={`text-[38px] ${i === 1 ? 'text-sun' : 'text-grape-2'}`}>{c.script}</Script>
+            </p>
+            <ul className="mt-auto space-y-0.5 text-[13px] opacity-80">
+              {c.items.slice(0, 5).map((p) => (
+                <li key={p.slug} className="truncate">
+                  · {p.title} {p.titleAccent}
+                </li>
+              ))}
+            </ul>
           </div>
-          <button onClick={() => onOpen(0)} className="mt-8 inline-flex items-center gap-2 text-[15px] font-medium text-paper link-u">
-            Ver las {p.media.length} piezas
-          </button>
+          <p className="px-2 pt-2.5 pb-1 text-[12px] font-semibold uppercase tracking-[0.12em] opacity-70">
+            {c.blurb} · {c.items.length}
+          </p>
+        </button>
+      ))}
+    </Reveal>
+  );
+};
+
+/* ------------------------------------------------------------ Portadilla de capítulo */
+
+const ChapterDivider: React.FC<{ c: (typeof chapters)[number] }> = ({ c }) => (
+  <div id={c.id} className="scroll-mt-16 relative overflow-hidden rounded-[32px] bg-night-2 px-6 py-16 md:py-24 text-center">
+    <DoodleField dense />
+    <p className="absolute left-6 top-5 text-[13px] font-semibold text-cream/50">Portafolio</p>
+    <p className="absolute right-6 top-5 text-[13px] font-semibold text-cream/50">2026</p>
+
+    <Reveal className="relative mx-auto w-[220px] md:w-[260px]">
+      {/* Escenario */}
+      <div className="absolute left-1/2 -bottom-10 h-20 w-[150%] -translate-x-1/2 rounded-[50%] bg-grape-3/70" aria-hidden />
+      <div className="absolute left-1/2 -bottom-8 h-12 w-[110%] -translate-x-1/2 rounded-[50%] bg-grape/80 blur-[1px]" aria-hidden />
+      <div className="relative rotate-[-4deg] rounded-[22px] bg-cream p-3 shadow-[0_30px_60px_-20px_rgba(0,0,0,.8)] transition-transform duration-700 hover:rotate-0">
+        <div className="rounded-[14px] bg-night px-5 pt-5 pb-8 text-left">
+          <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-cream font-display text-[30px] font-black text-night">
+            {c.n}
+          </span>
+          <p className="mt-6 font-display text-[clamp(2rem,4vw,2.6rem)] font-black leading-[0.9] tracking-tight text-grape-2">{c.title}</p>
+          <Script className="block text-[clamp(2.4rem,5vw,3.2rem)] leading-[0.9] text-cream">{c.script}</Script>
         </div>
       </div>
+      <svg viewBox="0 0 300 80" className="absolute left-1/2 top-[58%] w-[150%] -translate-x-1/2 text-cream/80 pointer-events-none" aria-hidden>
+        <path d="M20 40c0-22 260-34 260 0s-200 30-250 8" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      </svg>
+      <Sparkle className="absolute -right-8 -top-6 h-8 w-8 text-sun animate-twinkle" />
+    </Reveal>
 
-      <div className="col-span-12 lg:col-span-8">
-        <div className={`grid gap-3 md:gap-4 ${visible.length <= 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3'}`}>
-          {visible.map((m, idx) => {
-            const isLast = idx === visible.length - 1 && extra > 0;
-            return (
-              <Reveal key={m.src} delay={(idx % 3) * 60}>
-                <button
-                  onClick={() => onOpen(idx)}
-                  className="group relative block w-full aspect-[4/5] overflow-hidden rounded-[3px] bg-ink-2"
-                  aria-label={`Abrir ${m.alt ?? 'pieza'}`}
-                >
-                  {m.type === 'video' ? (
-                    <>
-                      <video src={`${url(m.src)}#t=3`} muted playsInline preload="metadata" className="h-full w-full object-cover" />
-                      <span className="absolute inset-0 flex items-center justify-center">
-                        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-paper text-ink transition-transform duration-500 group-hover:scale-110">
-                          <span className="material-symbols-outlined !text-[30px]">play_arrow</span>
-                        </span>
-                      </span>
-                      <span className="absolute left-3 top-3 rounded-full bg-ink/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-paper backdrop-blur">
-                        Reel
-                      </span>
-                    </>
-                  ) : (
-                    <img
-                      src={url(m.src)}
-                      alt={m.alt ?? ''}
-                      loading="lazy"
-                      className={`h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.04] ${
-                        p.alignTop ? 'object-top' : ''
-                      }`}
-                    />
+    <Reveal delay={150} className="relative mx-auto mt-20 max-w-2xl">
+      <p className="text-[16px] md:text-[18px] leading-relaxed text-cream/75">{c.intro}</p>
+      {'meta' in c && c.meta && (
+        <dl className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+          {c.meta.map(([k, v]) => (
+            <div key={k} className="rounded-2xl bg-night-3 p-4">
+              <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-grape-2">{k}</dt>
+              <dd className="mt-1 text-[14px] leading-snug text-cream/90">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </Reveal>
+  </div>
+);
+
+/* ------------------------------------------------------------ Slide de proyecto */
+
+const ProjectSlide: React.FC<{ p: Project; i: number; total: number; onOpen: (idx: number) => void }> = ({ p, i, total, onOpen }) => {
+  const th = themeOf(p.slug);
+  const fg = th.light ? 'text-night' : 'text-white';
+  const sub = th.light ? 'text-night/70' : 'text-white/80';
+  const [main, a, b] = p.media;
+  const extra = Math.max(0, p.media.length - 3);
+  const fit = p.alignTop ? 'object-top' : '';
+
+  const Thumb: React.FC<{ m: typeof main; idx: number; className?: string; label?: string }> = ({ m, idx, className = '', label }) => (
+    <figure className={className}>
+      <button
+        onClick={() => onOpen(idx)}
+        className="group relative block w-full aspect-[4/5] overflow-hidden rounded-[14px] bg-black/20 ring-4 ring-white shadow-[0_24px_50px_-20px_rgba(0,0,0,.65)] transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-1.5 hover:rotate-0"
+        aria-label={`Abrir ${m.alt ?? 'pieza'}`}
+      >
+        {m.type === 'video' ? (
+          <>
+            <video src={`${url(m.src)}#t=3`} muted playsInline preload="metadata" className="h-full w-full object-cover" />
+            <span className="absolute inset-0 flex items-center justify-center">
+              <span className="material-symbols-outlined flex h-14 w-14 items-center justify-center rounded-full bg-white text-night !text-[30px] transition-transform group-hover:scale-110">
+                play_arrow
+              </span>
+            </span>
+          </>
+        ) : (
+          <img
+            src={url(m.src)}
+            alt={m.alt ?? ''}
+            loading="lazy"
+            className={`h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105 ${fit}`}
+          />
+        )}
+      </button>
+      {label && <figcaption className={`mt-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.12em] ${sub}`}>{label}</figcaption>}
+    </figure>
+  );
+
+  return (
+    <article
+      id={p.slug}
+      className={`scroll-mt-20 relative overflow-hidden rounded-[32px] px-5 py-10 md:px-12 md:py-14 ${fg}`}
+      style={{ background: th.bg }}
+    >
+      <div className={`absolute inset-0 ${th.light ? 'dots-dark' : 'dots'}`} aria-hidden />
+      <div className="pointer-events-none absolute inset-0" style={{ color: th.accent }} aria-hidden>
+        <Sparkle className="absolute right-[4%] top-[6%] h-7 w-7 animate-twinkle" />
+        <Ring className="absolute left-[2%] bottom-[6%] h-10 w-10 opacity-70 animate-float-slow" />
+        <Cross className="absolute right-[42%] bottom-[5%] h-6 w-6 opacity-60 animate-float" />
+      </div>
+
+      <div className="relative grid grid-cols-12 gap-y-10 md:gap-x-10 items-center">
+        {/* Texto */}
+        <Reveal className="col-span-12 lg:col-span-4">
+          <span
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-bold uppercase tracking-[0.1em]"
+            style={{ background: th.accent, color: th.light ? '#fff' : '#1C1B20' }}
+          >
+            {String(i + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </span>
+          <h3 className="mt-5 font-display font-extrabold tracking-display leading-[0.95] text-[clamp(2.2rem,4.2vw,3.6rem)]">
+            {p.title}
+            <br />
+            <Script className="text-[1.25em] leading-[0.8]" >
+              <span style={{ color: th.accent }}>{p.titleAccent}</span>
+            </Script>
+          </h3>
+          <p className={`mt-2 text-[14px] font-semibold ${sub}`}>{p.format}</p>
+          <p className={`mt-5 text-[15px] md:text-[16px] leading-relaxed ${sub}`}>{p.summary}</p>
+
+          <p className="mt-6 font-display text-[15px] font-bold" style={{ color: th.accent }}>
+            Alcance
+          </p>
+          <ul className="mt-1.5 flex flex-wrap gap-2">
+            {p.tags.map((t) => (
+              <li key={t}>
+                <Tag dark={!th.light}>{t}</Tag>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            onClick={() => onOpen(0)}
+            className={`group mt-8 inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-semibold transition-transform hover:scale-[1.03] ${
+              th.light ? 'bg-night text-cream' : 'bg-white text-night'
+            }`}
+          >
+            Ver las {p.media.length} piezas
+            <span className="material-symbols-outlined !text-[18px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
+          </button>
+        </Reveal>
+
+        {/* Mockups */}
+        <div className="col-span-12 lg:col-span-8">
+          <div className="grid grid-cols-12 gap-4 md:gap-6 items-center">
+            <Reveal className="col-span-7">
+              <Thumb m={main} idx={0} className="-rotate-2" label="Portada" />
+            </Reveal>
+            <div className="col-span-5 flex flex-col gap-4 md:gap-6">
+              {a && (
+                <Reveal delay={120}>
+                  <Thumb m={a} idx={1} className="rotate-3" />
+                </Reveal>
+              )}
+              {b && (
+                <Reveal delay={220} className="relative">
+                  <Thumb m={b} idx={2} className="-rotate-1" />
+                  {extra > 0 && (
+                    <button
+                      onClick={() => onOpen(3)}
+                      className="absolute -right-2 -bottom-3 rotate-6 rounded-full px-3 py-1.5 text-[13px] font-extrabold shadow-lg"
+                      style={{ background: th.accent, color: th.light ? '#fff' : '#1C1B20' }}
+                    >
+                      +{extra} piezas
+                    </button>
                   )}
-                  {isLast && (
-                    <span className="absolute inset-0 flex items-center justify-center bg-ink/60 font-display text-[28px] font-semibold tracking-display text-paper">
-                      +{extra}
-                    </span>
-                  )}
-                </button>
-              </Reveal>
-            );
-          })}
+                </Reveal>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </article>
   );
 };
 
-/* ------------------------------------------------------------ Encabezado de grupo (igual para todos) */
-
-const GroupHeader: React.FC<{ index: string; label: string; title: React.ReactNode; intro: string; id: string }> = ({
-  index,
-  label,
-  title,
-  intro,
-  id,
-}) => (
-  <div className="pt-20 md:pt-28 pb-12 md:pb-16">
-    <Reveal>
-      <Eyebrow index={index} className="!text-paper/50">
-        {label}
-      </Eyebrow>
-    </Reveal>
-    <div className="mt-8 grid grid-cols-12 gap-y-8 md:gap-x-10 items-end">
-      <Reveal as="h2" className="col-span-12 lg:col-span-7 font-display font-semibold tracking-display leading-[0.9] text-[clamp(3rem,8vw,7.5rem)]">
-        <span id={id}>{title}</span>
-      </Reveal>
-      <Reveal delay={100} className="col-span-12 lg:col-span-5">
-        <p className="text-[17px] leading-relaxed text-paper/70 text-pretty">{intro}</p>
-      </Reveal>
-    </div>
-  </div>
-);
-
 /* ------------------------------------------------------------ Página */
-
-const social = works.filter((w) => w.category !== 'Web');
-const web = works.filter((w) => w.category === 'Web');
-
-const groups = [
-  { key: 'agua-buena', label: 'Agua Buena', items: campaigns as Project[] },
-  { key: 'marcas', label: 'Redes & branding', items: social as Project[] },
-  { key: 'web', label: 'Diseño web', items: web as Project[] },
-];
-
-const totalPieces = (list: { media: MediaItem[] }[]) => list.reduce((n, c) => n + c.media.length, 0);
 
 const Projects: React.FC = () => {
   const { open, node } = useLightbox();
   const [params] = useSearchParams();
 
-  // Deep-link: /projects?c=familia o /projects?w=cindel
   React.useEffect(() => {
     const target = params.get('c') || params.get('w');
     if (!target) return;
-    const t = window.setTimeout(() => {
-      document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 150);
+    const t = window.setTimeout(() => scrollToId(target), 150);
     return () => window.clearTimeout(t);
   }, [params]);
 
-  const renderBlocks = (items: Project[]) =>
-    items.map((p, i) => (
-      <ProjectBlock
-        key={p.slug}
-        p={p}
-        i={i}
-        total={items.length}
-        onOpen={(idx) => open(p.media, idx, `${p.title} ${p.titleAccent}`)}
-      />
-    ));
-
   return (
-    <>
-      <PageHeader
-        index="02"
-        label="Proyectos seleccionados"
-        title={
-          <>
-            Trabajo que <Accent>se ve</Accent> y se siente.
-          </>
-        }
-        intro={`${campaigns.length + works.length} proyectos y ${totalPieces([...campaigns, ...works])} piezas: campañas para redes sociales, identidad visual y sitios web para marcas de República Dominicana.`}
-      />
+    <div className="relative bg-night">
+      {/* Índice de contenido */}
+      <div className="relative overflow-hidden pt-16 md:pt-24 pb-24 md:pb-32">
+        <div className="pointer-events-none absolute inset-0 text-grape-2/60" aria-hidden>
+          <Star className="absolute left-[10%] top-[18%] h-7 w-7 text-sun animate-twinkle" />
+          <Squiggle className="absolute right-[8%] top-[22%] h-6 w-28" />
+        </div>
+        <Container className="relative">
+          <SectionTitle kicker="elige una carta" center>
+            Contenido
+          </SectionTitle>
+          <ContentCards />
+        </Container>
+      </div>
 
-      <section className="on-dark bg-ink text-paper">
-        {/* Índice de todos los proyectos */}
-        <Container>
-          <nav aria-label="Índice de proyectos" className="flex flex-col gap-3 py-8 border-b border-paper/10">
-            {groups.map((g) => (
-              <div key={g.key} className="flex items-center gap-3 min-w-0">
-                <span className="shrink-0 w-32 font-mono text-[11px] uppercase tracking-[0.14em] text-paper/40">{g.label}</span>
-                <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                  {g.items.map((p) => (
-                    <button
-                      key={p.slug}
-                      type="button"
-                      onClick={() => scrollToId(p.slug)}
-                      className="shrink-0 rounded-full border border-paper/20 px-4 py-2 text-[13px] text-paper/80 hover:bg-paper hover:text-ink transition-colors"
-                    >
-                      {p.title} {p.titleAccent}
-                    </button>
-                  ))}
-                </div>
-              </div>
+      <Container className="flex flex-col gap-6 md:gap-8 pb-24 md:pb-32">
+        {chapters.map((c) => (
+          <React.Fragment key={c.id}>
+            <ChapterDivider c={c} />
+            {c.items.map((p, i) => (
+              <ProjectSlide key={p.slug} p={p} i={i} total={c.items.length} onOpen={(idx) => open(p.media, idx, `${p.title} ${p.titleAccent}`)} />
             ))}
-          </nav>
-        </Container>
+          </React.Fragment>
+        ))}
 
-        {/* ---------------- 01 Agua Buena */}
-        <Container>
-          <GroupHeader index="2.1" label="Caso destacado" id="g-agua-buena" title="Agua Buena" intro={aguaBuena.intro} />
-          <Reveal>
-            <dl className="grid grid-cols-2 md:grid-cols-4 border-t border-paper/15">
-              {[
-                ['Cliente', 'Agua Buena — agua mineralizada'],
-                ['Rol', aguaBuena.role],
-                ['Entregables', aguaBuena.deliverables],
-                ['Alcance', `${campaigns.length} campañas · ${totalPieces(campaigns)} piezas`],
-              ].map(([k, v]) => (
-                <div key={k} className="py-6 pr-6 border-b border-paper/15 md:border-b-0">
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/45">{k}</dt>
-                  <dd className="mt-2 text-[15px] leading-snug text-paper/90">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
-        </Container>
-        <Reveal className="mt-10 md:mt-14">
+        {/* Vista general Agua Buena como cierre visual */}
+        <Reveal className="relative overflow-hidden rounded-[32px] bg-night-2 p-6 md:p-10">
+          <Script className="block text-center text-[28px] text-grape-2 -rotate-1">todas las portadas de Agua Buena</Script>
           <button
             onClick={() => open([{ src: aguaBuena.overview, alt: 'Agua Buena — vista general de las cinco campañas' }], 0, 'Agua Buena')}
-            className="block w-full overflow-hidden"
-            aria-label="Ampliar vista general de las campañas"
+            className="mt-4 block w-full overflow-hidden rounded-[18px]"
+            aria-label="Ampliar vista general"
           >
-            <img src={url(aguaBuena.overview)} alt="Portadas de las cinco campañas de Agua Buena" className="w-full h-auto" />
+            <img src={url(aguaBuena.overview)} alt="Portadas de las cinco campañas de Agua Buena" loading="lazy" className="w-full h-auto" />
           </button>
         </Reveal>
-        <Container className="pt-6">{renderBlocks(groups[0].items)}</Container>
+      </Container>
 
-        {/* ---------------- 02 Redes & branding */}
-        <Container className="border-t border-paper/10">
-          <GroupHeader
-            index="2.2"
-            label="Redes sociales & branding"
-            id="g-marcas"
-            title={
-              <>
-                Marcas <Accent className="text-accent">& branding</Accent>
-              </>
-            }
-            intro={`Gestión de cuentas, parrillas de contenido e identidad visual para ${social.length} marcas: ${social
-              .map((s) => `${s.title} ${s.titleAccent}`)
-              .join(', ')}.`}
-          />
-          {renderBlocks(groups[1].items)}
-        </Container>
-
-        {/* ---------------- 03 Web */}
-        <Container className="border-t border-paper/10 pb-12 md:pb-20">
-          <GroupHeader
-            index="2.3"
-            label="Diseño web"
-            id="g-web"
-            title={
-              <>
-                Sitios <Accent className="text-accent">web</Accent>
-              </>
-            }
-            intro="Diseño UX/UI de sitios y landing pages con foco en claridad, identidad y conversión."
-          />
-          {renderBlocks(groups[2].items)}
-        </Container>
-      </section>
-
-      {/* ------------------------------------------------ CTA */}
-      <section className="py-24 md:py-32">
-        <Container>
-          <Reveal className="rounded-[6px] bg-accent px-6 py-14 md:px-14 md:py-20 grid grid-cols-12 gap-y-8 md:gap-x-10 items-end">
-            <h2 className="col-span-12 md:col-span-8 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2.25rem,5vw,4.5rem)]">
-              ¿Tu marca es <Accent>la siguiente</Accent>?
-            </h2>
-            <div className="col-span-12 md:col-span-4 md:justify-self-end">
-              <Button to="#contacto">Trabajemos juntos</Button>
-            </div>
-          </Reveal>
-        </Container>
-      </section>
-
+      <CloudEdge className="absolute inset-x-0 -bottom-px h-10 md:h-16 w-full text-night-2" />
       {node}
-    </>
+    </div>
   );
 };
 

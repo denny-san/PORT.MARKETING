@@ -9,7 +9,33 @@ export interface Campaign {
   cover: string;
   media: MediaItem[];
   tags: string[];
+  /** Colores del slide, tomados de la marca de cada proyecto */
+  theme?: Theme;
 }
+
+export interface Theme {
+  bg: string;
+  accent: string;
+  /** Texto oscuro sobre fondos claros */
+  light?: boolean;
+}
+
+const THEMES: Record<string, Theme> = {
+  prevencion: { bg: 'linear-gradient(135deg,#F472B6 0%,#DB2777 55%,#9D174D 100%)', accent: '#FFE4F1' },
+  constitucion: { bg: 'linear-gradient(135deg,#0B3C8C 0%,#082A66 60%,#06204F 100%)', accent: '#FF5A6E' },
+  reforestacion: { bg: 'linear-gradient(135deg,#2F9E57 0%,#1E7A3F 55%,#145A2D 100%)', accent: '#C6F36B' },
+  revital: { bg: 'linear-gradient(135deg,#60B8F0 0%,#2F8FD8 55%,#1D6DB5 100%)', accent: '#FFF2A8' },
+  familia: { bg: 'linear-gradient(135deg,#1D4ED8 0%,#1E3A8A 60%,#172554 100%)', accent: '#7DD3FC' },
+  cindel: { bg: 'linear-gradient(135deg,#1747B8 0%,#0F2F86 60%,#0A1F5C 100%)', accent: '#FF4D4D' },
+  novaweb: { bg: 'linear-gradient(135deg,#13254F 0%,#0B1838 60%,#070F26 100%)', accent: '#4D8DFF' },
+  musica: { bg: 'linear-gradient(135deg,#4338CA 0%,#3123A6 55%,#1E1470 100%)', accent: '#FF7AC6' },
+  comida: { bg: 'linear-gradient(135deg,#F26B21 0%,#D9480F 55%,#A8350B 100%)', accent: '#FFD400' },
+  restaurante: { bg: 'linear-gradient(135deg,#2A2420 0%,#181412 100%)', accent: '#E0A458' },
+  salon: { bg: 'linear-gradient(135deg,#FBEDE8 0%,#F3D9D1 100%)', accent: '#B5536B', light: true },
+  portafolio: { bg: 'linear-gradient(135deg,#1F2937 0%,#111827 100%)', accent: '#FFD700' },
+};
+
+export const themeOf = (slug: string): Theme => THEMES[slug] ?? { bg: '#302D38', accent: '#A78BFA' };
 
 export interface Work extends Campaign {
   category: 'Redes sociales' | 'Branding' | 'Web';

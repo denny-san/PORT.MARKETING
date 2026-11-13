@@ -68,7 +68,7 @@ const TopBar = () => {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-[background-color,border-color] duration-300 print:hidden ${
-        scrolled ? 'bg-paper/85 backdrop-blur-md border-b border-line' : 'border-b border-transparent'
+        scrolled ? 'bg-night/85 backdrop-blur-md border-b border-cream/10' : 'border-b border-transparent'
       }`}
     >
       <Container className="flex h-16 items-center justify-between gap-4">
@@ -78,13 +78,15 @@ const TopBar = () => {
           className="flex items-baseline gap-2 min-w-0"
           aria-label="Volver al inicio"
         >
-          <span className="font-display text-[19px] font-semibold tracking-tightish whitespace-nowrap">Denny Sánchez</span>
-          <span className="hidden sm:inline font-serif italic text-[17px] text-muted whitespace-nowrap">— marketing & diseño</span>
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full bg-cream font-script text-[18px] font-bold text-night -rotate-6">
+            DS
+          </span>
+          <span className="font-display text-[17px] font-bold tracking-tightish whitespace-nowrap text-cream">Denny Sánchez</span>
         </Link>
 
         <p
           aria-live="polite"
-          className={`hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-muted transition-opacity duration-300 ${
+          className={`hidden md:block rounded-full bg-night-3 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-grape-2 transition-opacity duration-300 ${
             section ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -94,19 +96,19 @@ const TopBar = () => {
         <a
           href={CV_PDF}
           download={CV_PDF_NAME}
-          className="group inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-[14px] font-medium text-paper hover:bg-ink-2 transition-colors"
+          className="group inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-grape px-5 text-[14px] font-semibold text-white hover:bg-grape-2 transition-colors"
         >
           Descargar CV
           <span className="material-symbols-outlined !text-[18px] transition-transform group-hover:translate-y-0.5">download</span>
         </a>
       </Container>
-      <div className="absolute left-0 bottom-[-1px] h-[2px] bg-accent origin-left" style={{ width: '100%', transform: `scaleX(${progress})` }} aria-hidden />
+      <div className="absolute left-0 bottom-[-1px] h-[3px] bg-grape origin-left" style={{ width: '100%', transform: `scaleX(${progress})` }} aria-hidden />
     </header>
   );
 };
 
 const Footer = () => (
-  <footer className="on-dark bg-ink text-paper print:hidden">
+  <footer className="bg-night text-cream border-t border-cream/10 print:hidden">
     <Container className="py-10 flex flex-col md:flex-row gap-6 md:items-center justify-between text-[13px] text-paper/50">
       <p>© {new Date().getFullYear()} Denny Sánchez — Marketing & Diseño Gráfico. Azua de Compostela, RD.</p>
       <div className="flex gap-6">
@@ -151,7 +153,7 @@ const App: React.FC = () => {
     <HashRouter>
       <ScrollToTop />
       {showWelcome && <WelcomeScreen onFinish={finishIntro} />}
-      <div className="relative flex min-h-screen w-full flex-col bg-paper text-ink">
+      <div className="relative flex min-h-screen w-full flex-col bg-night text-cream">
         <TopBar />
         <main id="main" tabIndex={-1} className="flex-1 overflow-x-clip outline-none">
           <Suspense fallback={<Fallback />}>
