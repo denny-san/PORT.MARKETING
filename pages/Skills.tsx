@@ -1,114 +1,85 @@
-
 import React from 'react';
+import { Accent, Button, Container, Eyebrow, PageHeader, Reveal } from '../components/ui';
 
-interface SkillCardProps {
-  title: string;
-  desc: string;
-  icon: string;
-  proficiency: number;
-  mainIcon: string;
-}
+const skills = [
+  { title: 'Gestión de redes sociales', desc: 'Estrategias de contenido, engagement y crecimiento de comunidades.', level: 95 },
+  { title: 'Branding y estrategia', desc: 'Desarrollo de identidad de marca, línea gráfica y posicionamiento.', level: 92 },
+  { title: 'Publicidad digital', desc: 'Campañas en Meta Ads, Google Ads y plataformas sociales.', level: 90 },
+  { title: 'Análisis de datos', desc: 'Métricas de rendimiento, reportes y optimización del retorno.', level: 88 },
+  { title: 'Creación de contenido', desc: 'Diseño gráfico, edición de video y storytelling.', level: 85 },
+  { title: 'Marketing digital', desc: 'SEO, SEM y estrategias integradas de marketing online.', level: 80 },
+];
 
-const SkillCard: React.FC<SkillCardProps> = ({ title, desc, icon, proficiency, mainIcon }) => (
-  <div className="group relative flex flex-col p-8 rounded-xl border border-white/10 bg-[#161616] transition-all duration-300 hover:border-primary hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(153,153,153,0.15)]">
-    <div className="absolute top-6 right-6 text-primary/10 group-hover:text-primary transition-colors">
-      <span className="material-symbols-outlined text-[48px]">{mainIcon}</span>
-    </div>
+const tools = ['Canva Pro', 'Figma', 'Adobe', 'Meta Ads', 'Google Ads', 'Instagram', 'Facebook', 'TikTok', 'Analytics'];
 
-    <div className="mb-8">
-      <div className="w-14 h-14 rounded bg-primary/10 flex items-center justify-center text-primary mb-6 border border-primary/20 group-hover:bg-primary group-hover:text-black transition-all">
-        <span className="material-symbols-outlined text-[30px]">{icon}</span>
-      </div>
-      <h3 className="text-white text-xl font-bold font-display uppercase tracking-tight mb-3 group-hover:text-primary transition-colors">{title}</h3>
-      <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
-    </div>
+const Skills: React.FC = () => (
+  <>
+    <PageHeader
+      index="C"
+      label="Servicios y capacidades"
+      title={
+        <>
+          Lo que <Accent>hago</Accent> mejor.
+        </>
+      }
+      intro="Un conjunto de habilidades que une diseño gráfico, contenido y marketing de resultados."
+    />
 
-    <div className="mt-auto pt-6 border-t border-white/5">
-      <div className="flex justify-between items-end mb-2">
-        <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Dominio</span>
-        <span className="text-[10px] font-mono text-primary font-bold">{proficiency}%</span>
-      </div>
-      <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-        <div className="bg-primary h-full rounded-full shadow-[0_0_8px_rgba(153,153,153,0.3)] transition-all duration-1000 ease-out" style={{ width: `${proficiency}%` }}></div>
-      </div>
-    </div>
-  </div>
+    <section className="py-20 md:py-28">
+      <Container>
+        <ol className="border-t border-ink">
+          {skills.map((s, i) => (
+            <Reveal as="li" key={s.title} delay={i * 50} className="group grid grid-cols-12 gap-x-4 gap-y-3 border-b border-line py-8 md:py-10 items-center">
+              <span className="col-span-2 md:col-span-1 font-mono text-[12px] text-muted">{String(i + 1).padStart(2, '0')}</span>
+              <h2 className="col-span-10 md:col-span-4 font-display text-[clamp(1.5rem,2.6vw,2.25rem)] font-semibold tracking-tightish leading-tight transition-transform duration-500 group-hover:translate-x-1">
+                {s.title}
+              </h2>
+              <p className="col-span-10 col-start-3 md:col-span-4 md:col-start-auto text-[15px] leading-relaxed text-muted">{s.desc}</p>
+              <div className="col-span-10 col-start-3 md:col-span-3 md:col-start-auto flex items-center gap-4">
+                <div className="h-px flex-1 bg-line relative" role="meter" aria-valuenow={s.level} aria-valuemin={0} aria-valuemax={100} aria-label={`Dominio de ${s.title}`}>
+                  <div className="absolute inset-y-[-1px] left-0 bg-ink" style={{ width: `${s.level}%` }} />
+                </div>
+                <span className="font-mono text-[12px] tabular-nums w-10 text-right">{s.level}%</span>
+              </div>
+            </Reveal>
+          ))}
+        </ol>
+      </Container>
+    </section>
+
+    <section className="pb-24 md:pb-32">
+      <Container>
+        <div className="grid grid-cols-12 gap-y-10 md:gap-x-10">
+          <Reveal className="col-span-12 md:col-span-4">
+            <Eyebrow index="01">Herramientas</Eyebrow>
+            <h2 className="mt-6 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2rem,4vw,3.5rem)]">
+              Mi <Accent>caja</Accent> de trabajo
+            </h2>
+          </Reveal>
+          <Reveal delay={80} className="col-span-12 md:col-span-8">
+            <ul className="flex flex-wrap gap-3">
+              {tools.map((t) => (
+                <li key={t} className="rounded-full border border-ink/20 px-5 py-3 font-display text-[18px] font-medium tracking-tightish hover:bg-ink hover:text-paper transition-colors">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+
+        <Reveal className="mt-20 md:mt-28 rounded-[6px] bg-ink text-paper on-dark px-6 py-14 md:px-14 md:py-20 grid grid-cols-12 gap-y-8 md:gap-x-10 items-end">
+          <h2 className="col-span-12 md:col-span-8 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2.25rem,5vw,4.5rem)]">
+            ¿Listo para impulsar <Accent className="text-accent">tu marca</Accent>?
+          </h2>
+          <div className="col-span-12 md:col-span-4 md:justify-self-end">
+            <Button to="/contact" variant="accent">
+              Iniciar colaboración
+            </Button>
+          </div>
+        </Reveal>
+      </Container>
+    </section>
+  </>
 );
-
-const Skills: React.FC = () => {
-  const skills = [
-    { title: 'Gestión de Redes Sociales', desc: 'Estrategias de contenido, engagement y crecimiento de comunidades.', icon: 'groups', proficiency: 95, m: 'groups' },
-    { title: 'Publicidad Digital', desc: 'Campañas en Meta Ads, Google Ads y plataformas sociales.', icon: 'campaign', proficiency: 90, m: 'campaign' },
-    { title: 'Creación de Contenido', desc: 'Diseño gráfico, edición de video y storytelling efectivo.', icon: 'palette', proficiency: 85, m: 'palette' },
-    { title: 'Análisis de Datos', desc: 'Métricas de rendimiento, reportes y optimización de ROI.', icon: 'analytics', proficiency: 88, m: 'analytics' },
-    { title: 'Branding y Estrategia', desc: 'Desarrollo de identidad de marca y posicionamiento.', icon: 'branding_watermark', proficiency: 92, m: 'branding_watermark' },
-    { title: 'Marketing Digital', desc: 'SEO, SEM y estrategias integradas de marketing online.', icon: 'trending_up', proficiency: 80, m: 'trending_up' },
-  ];
-
-  return (
-    <div className="px-6 py-12 md:py-24 mx-auto max-w-[1200px]">
-      <div className="flex flex-col max-w-4xl mb-16">
-        <div className="flex items-center gap-4 mb-3">
-          <div className="h-[2px] w-12 bg-primary"></div>
-          Competencias de Marketing
-        </div>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white uppercase mb-8">
-          Habilidades Marketing<span className="text-primary">_</span>
-        </h1>
-        <p className="text-gray-400 text-xl font-light leading-relaxed max-w-2xl">
-          Conjunto de habilidades especializadas en marketing digital, creación de contenido y estrategias de crecimiento de marca.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {skills.map(s => (
-          <SkillCard
-            key={s.title}
-            title={s.title}
-            desc={s.desc}
-            icon={s.icon}
-            proficiency={s.proficiency}
-            mainIcon={s.m}
-          />
-        ))}
-
-        {/* Big Lab Card */}
-        <div className="group relative lg:col-span-2 flex flex-col md:flex-row gap-10 p-10 rounded-xl border border-white/10 bg-[#161616] hover:border-primary transition-all">
-          <div className="absolute top-10 right-10 text-primary/10">
-            <span className="material-symbols-outlined text-[120px]">palette</span>
-          </div>
-          <div className="shrink-0 flex items-center justify-center">
-            <div className="w-24 h-24 rounded bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:bg-primary group-hover:text-black transition-all">
-              <span className="material-symbols-outlined text-[56px]">design_services</span>
-            </div>
-          </div>
-          <div className="flex-1 flex flex-col justify-center">
-            <h3 className="text-xl font-bold text-white uppercase mb-4 tracking-tight group-hover:text-primary transition-colors">Canva Pro Tools</h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-lg">
-              Herramientas avanzadas de diseño gráfico para creación de contenido visual impactante y branding profesional.
-            </p>
-            <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden mt-auto">
-              <div className="bg-primary h-full rounded-full" style={{ width: '95%' }}></div>
-            </div>
-            <div className="flex justify-between mt-2">
-              <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Dominio Creativo</span>
-              <span className="text-[10px] font-mono text-primary font-bold">95%</span>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Card */}
-        <div className="flex flex-col items-center justify-center p-10 rounded-xl border border-primary/30 bg-primary/5 text-center transition-all hover:bg-primary/10">
-          <span className="material-symbols-outlined text-primary text-5xl mb-6">campaign</span>
-          <h3 className="text-white text-xl font-bold uppercase mb-3 tracking-tight">¿Listo para Impulsar tu Marca?</h3>
-          <p className="text-gray-400 text-sm mb-8 leading-relaxed">Disponible para proyectos de marketing digital y gestión de redes sociales.</p>
-          <button className="w-full rounded bg-primary py-3 px-6 text-black font-bold uppercase text-sm tracking-widest hover:bg-gray-400 transition-colors">
-            Iniciar Colaboración
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default Skills;

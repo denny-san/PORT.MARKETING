@@ -25,3 +25,8 @@ dist-ssr
 
 .vercel
 .env*.local
+.env*.backup
+.env*
+
+# Originales pesados (las versiones optimizadas están en public/agua-buena)
+Portafolio-Agua-Buena-5-proyectos/

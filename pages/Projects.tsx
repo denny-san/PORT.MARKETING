@@ -1,280 +1,292 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Accent, Button, Container, Eyebrow, PageHeader, Reveal, Tag } from '../components/ui';
+import { useLightbox } from '../components/Lightbox';
+import { aguaBuena, campaigns, works, url, Campaign, Work } from '../data/projects';
 
-interface Project {
-    title: string;
-    description: string;
-    category: string;
-    folder: string;
-    profilePhoto: string;
-    galleryImages: string[];
-    tags: string[];
-    link?: string;
-}
+/* ------------------------------------------------------------ Campaña */
 
-const projects: Project[] = [
-    {
-        title: "CINDEL",
-        description: "Gestión estratégica de cuenta de Instagram y creación de contenido visual de alto impacto.",
-        category: "Social Media Management",
-        folder: "CINDEL",
-        profilePhoto: "FOTO PERFIL.png",
-        galleryImages: ["FOTO1.png", "FOTO2.png", "FOTO3.png", "FOTO4.png", "FOTO5.png", "FOTO6.png", "FOTO7.png"],
-        tags: ["Instagram", "Diseño Gráfico", "Canva"],
-        link: "#"
-    },
-    {
-        title: "NOVAWEB",
-        description: "Administración de perfil corporativo y diseño de parrilla de contenidos mensuales.",
-        category: "Cuentas Administradas",
-        folder: "NOVAWEB",
-        profilePhoto: "FOTO PERFIL.jpeg",
-        galleryImages: ["FOTO1.png", "FOTO2.png", "FOTO 3.png", "FOTO4.png", "FOTO5.png", "FOTO6.png", "FOTO7.png", "FOTO8.png", "FOTO9.png", "FOTO10.png", "FOTO11.png"],
-        tags: ["Estrategia Digital", "Copywriting", "Figma"],
-        link: "#"
-    },
-    {
-        title: "MUSICA App",
-        description: "Identidad visual y diseño de branding para marcas del sector musical y entretenimiento.",
-        category: "Diseño Gráfico",
-        folder: "MUSICA",
-        profilePhoto: "FOTO PERFIL.png",
-        galleryImages: Array.from({ length: 17 }, (_, i) => `FOTO${i + 1}.png`),
-        tags: ["Branding", "Figma", "Canva"],
-        link: "#"
-    },
-    {
-        title: "COMIDA Express",
-        description: "Marketing gastronómico: Gestión de comunidad y diseño de promociones para delivery.",
-        category: "Social Media",
-        folder: "COMIDA",
-        profilePhoto: "FOTO PERFIL_.png",
-        galleryImages: ["FOTO1.png", "FOTO2.png", "FOTO3.png"],
-        tags: ["Ads", "Content Creator", "Canva"],
-        link: "#"
-    }
-];
+const CampaignBlock: React.FC<{ c: Campaign; i: number; onOpen: (idx: number) => void }> = ({ c, i, onOpen }) => {
+  const visible = c.media.slice(0, 6);
+  const extra = c.media.length - visible.length;
 
-const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
-    const scrollRef = useRef<HTMLDivElement>(null);
-
-    const scroll = (direction: 'left' | 'right') => {
-        if (scrollRef.current) {
-            const { scrollLeft, clientWidth } = scrollRef.current;
-            const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2;
-            scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-        }
-    };
-
-    return (
-        <div className="bg-[#151515] border border-white/5 rounded-3xl p-6 md:p-8 hover:border-primary/30 transition-all duration-500 group">
-            <div className="flex flex-col lg:flex-row gap-10 items-center lg:items-center">
-
-                {/* Profile Circle */}
-                <div className="relative shrink-0">
-                    <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-primary/20 p-1 group-hover:border-primary transition-colors duration-500">
-                        <div className="w-full h-full rounded-full overflow-hidden bg-neutral-900">
-                            <img
-                                src={`/${project.folder}/${project.profilePhoto}`}
-                                alt={`${project.title} Profile`}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                onError={(e) => {
-                                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/200?text=Profile';
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <div className="absolute -bottom-2 -right-2 bg-primary text-black text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">
-                        {project.category}
-                    </div>
-                </div>
-
-                {/* Info & Carousel */}
-                <div className="flex-1 w-full overflow-hidden">
-                    <div className="mb-6">
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
-                        <p className="text-gray-400 text-sm md:text-base line-clamp-2 max-w-xl">
-                            {project.description}
-                        </p>
-                    </div>
-
-                    <div className="relative group/carousel">
-                        {/* Navigation Buttons */}
-                        <button
-                            onClick={() => scroll('left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 backdrop-blur-md text-white p-2 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-opacity"
-                        >
-                            <span className="material-symbols-outlined">chevron_left</span>
-                        </button>
-                        <button
-                            onClick={() => scroll('right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 backdrop-blur-md text-white p-2 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-opacity"
-                        >
-                            <span className="material-symbols-outlined">chevron_right</span>
-                        </button>
-
-                        {/* Square Gallery Carousel */}
-                        <div
-                            ref={scrollRef}
-                            className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"
-                        >
-                            {project.galleryImages.map((img, idx) => (
-                                <div
-                                    key={idx}
-                                    className="shrink-0 w-32 h-32 md:w-40 md:h-40 bg-neutral-900 rounded-2xl overflow-hidden border border-white/5 snap-start hover:border-primary/50 transition-all"
-                                >
-                                    <img
-                                        src={`/${project.folder}/${img}`}
-                                        alt={`${project.title} design ${idx + 1}`}
-                                        className="w-full h-full object-cover"
-                                        loading="lazy"
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/150?text=Design';
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 mt-4">
-                        {project.tags.map(tag => (
-                            <span key={tag} className="text-[10px] font-mono px-3 py-1 rounded-lg bg-primary/5 text-primary/70 border border-primary/10 uppercase">
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            </div>
+  return (
+    <article id={c.slug} className="scroll-mt-24 grid grid-cols-12 gap-y-10 md:gap-x-10 py-16 md:py-24 border-t border-paper/10 first:border-t-0">
+      <div className="col-span-12 lg:col-span-4">
+        <div className="lg:sticky lg:top-28">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/50">
+            {String(i + 1).padStart(2, '0')} / {String(campaigns.length).padStart(2, '0')} · {c.format}
+          </p>
+          <h3 className="mt-5 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2rem,4vw,3.5rem)]">
+            {c.title} <Accent className="text-accent">{c.titleAccent}</Accent>
+          </h3>
+          <p className="mt-6 text-[16px] leading-relaxed text-paper/70 max-w-md text-pretty">{c.summary}</p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {c.tags.map((t) => (
+              <Tag key={t} dark>
+                {t}
+              </Tag>
+            ))}
+          </div>
+          <button
+            onClick={() => onOpen(0)}
+            className="group mt-8 inline-flex items-center gap-2 text-[15px] font-medium text-paper link-u"
+          >
+            Ver las {c.media.length} piezas
+          </button>
         </div>
-    );
+      </div>
+
+      <div className="col-span-12 lg:col-span-8">
+        <div className={`grid gap-3 md:gap-4 ${visible.length <= 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3'}`}>
+          {visible.map((m, idx) => {
+            const isLast = idx === visible.length - 1 && extra > 0;
+            return (
+              <Reveal key={m.src} delay={(idx % 3) * 60}>
+                <button
+                  onClick={() => onOpen(idx)}
+                  className="group relative block w-full aspect-[4/5] overflow-hidden rounded-[3px] bg-ink-2"
+                  aria-label={`Abrir ${m.alt ?? 'pieza'}`}
+                >
+                  {m.type === 'video' ? (
+                    <>
+                      <video
+                        src={`${url(m.src)}#t=3`}
+                        muted
+                        playsInline
+                        preload="metadata"
+                        className="h-full w-full object-cover"
+                      />
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-paper text-ink transition-transform duration-500 group-hover:scale-110">
+                          <span className="material-symbols-outlined !text-[30px]">play_arrow</span>
+                        </span>
+                      </span>
+                      <span className="absolute left-3 top-3 rounded-full bg-ink/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-paper backdrop-blur">
+                        Reel
+                      </span>
+                    </>
+                  ) : (
+                    <img
+                      src={url(m.src)}
+                      alt={m.alt ?? ''}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.04]"
+                    />
+                  )}
+                  {isLast && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-ink/60 font-display text-[28px] font-semibold tracking-display text-paper">
+                      +{extra}
+                    </span>
+                  )}
+                </button>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </article>
+  );
 };
 
+/* ------------------------------------------------------------ Tarjeta de proyecto */
+
+const ratioCls: Record<Work['ratio'], string> = {
+  portrait: 'aspect-[4/3]',
+  square: 'aspect-[4/3]',
+  landscape: 'aspect-[4/3]',
+};
+
+const WorkCard: React.FC<{ w: Work; onOpen: () => void; index: number }> = ({ w, onOpen, index }) => (
+  <Reveal delay={(index % 3) * 70}>
+    <button id={w.slug} onClick={onOpen} className="group block w-full text-left scroll-mt-24">
+      <div className={`relative ${ratioCls[w.ratio]} overflow-hidden rounded-[4px] bg-paper-2 ${w.ratio === 'landscape' ? 'border border-line' : ''}`}>
+        {w.ratio === 'landscape' && (
+          <div className="absolute inset-x-0 top-0 z-10 flex h-6 items-center gap-1.5 bg-paper px-3 border-b border-line" aria-hidden>
+            <span className="h-2 w-2 rounded-full bg-ink/15" />
+            <span className="h-2 w-2 rounded-full bg-ink/15" />
+            <span className="h-2 w-2 rounded-full bg-ink/15" />
+          </div>
+        )}
+        <img
+          src={url(w.cover)}
+          alt={w.title}
+          loading="lazy"
+          className={`h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.04] ${
+            w.ratio === 'landscape' ? 'object-top pt-6' : ''
+          }`}
+        />
+        <span className="absolute bottom-3 right-3 rounded-full bg-paper/90 px-3 py-1.5 text-[12px] font-medium opacity-0 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 backdrop-blur">
+          {w.media.length} piezas ↗
+        </span>
+      </div>
+      <div className="mt-4 flex items-baseline justify-between gap-3">
+        <h3 className="font-display text-[20px] font-semibold tracking-tightish">{w.title}</h3>
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">{w.category}</span>
+      </div>
+      <p className="mt-1.5 text-[14px] leading-relaxed text-muted text-pretty">{w.summary}</p>
+    </button>
+  </Reveal>
+);
+
+/* ------------------------------------------------------------ Página */
+
+const FILTERS = ['Todos', 'Redes sociales', 'Branding', 'Web'] as const;
+type Filter = (typeof FILTERS)[number];
+
 const Projects: React.FC = () => {
-    return (
-        <div className="min-h-screen pt-24 pb-20 px-6 bg-background-dark">
-            <div className="max-w-[1200px] mx-auto">
-                <div className="mb-16">
-                    <span className="text-primary font-mono text-sm uppercase tracking-[0.4em] mb-4 block">Portafolio</span>
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tighter">
-                        GALERÍA DE <span className="text-primary italic">TRABAJOS</span>
-                    </h1>
-                    <div className="h-1 w-20 bg-primary mb-8 ml-1"></div>
-                    <p className="text-gray-400 max-w-2xl text-lg leading-relaxed">
-                        Explora una selección de cuentas administradas y diseños creados con Canva y Figma.
-                        Estrategia de contenido y branding visual para potenciar marcas en Instagram.
-                    </p>
+  const { open, node } = useLightbox();
+  const [params] = useSearchParams();
+  const [filter, setFilter] = React.useState<Filter>('Todos');
+
+  // Deep-link: /projects?c=familia o /projects?w=cindel
+  React.useEffect(() => {
+    const target = params.get('c') || params.get('w');
+    if (!target) return;
+    const t = window.setTimeout(() => {
+      document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 150);
+    return () => window.clearTimeout(t);
+  }, [params]);
+
+  const list = filter === 'Todos' ? works : works.filter((w) => w.category === filter);
+
+  return (
+    <>
+      <PageHeader
+        index="P"
+        label="Proyectos seleccionados"
+        title={
+          <>
+            Trabajo que <Accent>se ve</Accent> y se siente.
+          </>
+        }
+        intro="Campañas para redes sociales, identidad visual y sitios web. Una selección de proyectos reales con marcas de República Dominicana."
+      />
+
+      {/* ------------------------------------------------ CASO AGUA BUENA */}
+      <section aria-labelledby="ab-title" className="on-dark bg-ink text-paper">
+        <Container className="pt-20 md:pt-28">
+          <Reveal>
+            <Eyebrow index="01" className="!text-paper/50">
+              Caso destacado
+            </Eyebrow>
+          </Reveal>
+          <div className="mt-8 grid grid-cols-12 gap-y-8 md:gap-x-10 items-end">
+            <Reveal as="h2" className="col-span-12 lg:col-span-7 font-display font-semibold tracking-display leading-[0.9] text-[clamp(3rem,8vw,7.5rem)]">
+              <span id="ab-title">Agua Buena</span>
+            </Reveal>
+            <Reveal delay={100} className="col-span-12 lg:col-span-5">
+              <p className="text-[17px] leading-relaxed text-paper/70 text-pretty">{aguaBuena.intro}</p>
+            </Reveal>
+          </div>
+
+          <Reveal delay={120}>
+            <dl className="mt-14 grid grid-cols-2 md:grid-cols-4 border-t border-paper/15">
+              {[
+                ['Cliente', 'Agua Buena — agua mineralizada'],
+                ['Rol', aguaBuena.role],
+                ['Entregables', aguaBuena.deliverables],
+                ['Alcance', `${campaigns.length} campañas · ${campaigns.reduce((n, c) => n + c.media.length, 0)} piezas`],
+              ].map(([k, v]) => (
+                <div key={k} className="py-6 pr-6 border-b border-paper/15 md:border-b-0">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/45">{k}</dt>
+                  <dd className="mt-2 text-[15px] leading-snug text-paper/90">{v}</dd>
                 </div>
+              ))}
+            </dl>
+          </Reveal>
+        </Container>
 
-                <div className="flex flex-col gap-12">
-                    {projects.map((project, index) => (
-                        <ProjectCard key={index} project={project} />
-                    ))}
-                </div>
+        <Reveal className="mt-10 md:mt-14">
+          <button
+            onClick={() =>
+              open([{ src: aguaBuena.overview, alt: 'Agua Buena — vista general de las cinco campañas' }], 0, 'Agua Buena')
+            }
+            className="block w-full overflow-hidden"
+            aria-label="Ampliar vista general de las campañas"
+          >
+            <img src={url(aguaBuena.overview)} alt="Portadas de las cinco campañas de Agua Buena" className="w-full h-auto" />
+          </button>
+        </Reveal>
 
-                {/* Web Pages Section */}
-                <div className="mt-32">
-                    <div className="mb-12">
-                        <span className="text-primary font-mono text-sm uppercase tracking-[0.4em] mb-4 block">Desarrollo</span>
-                        <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tighter">
-                            PÁGINAS <span className="text-primary italic">WEB</span>
-                        </h2>
-                        <div className="h-1 w-20 bg-primary mb-8 ml-1"></div>
-                        <p className="text-gray-400 max-w-2xl text-lg leading-relaxed">
-                            Diseño y desarrollo de sitios web profesionales con enfoque en UX/UI y conversión.
-                            Proyectos individuales optimizados para escritorio.
-                        </p>
-                    </div>
+        <Container className="pb-12 md:pb-20">
+          <nav aria-label="Campañas" className="flex gap-2 overflow-x-auto no-scrollbar py-8 border-b border-paper/10">
+            {campaigns.map((c, i) => (
+              <a
+                key={c.slug}
+                href={`#/projects?c=${c.slug}`}
+                className="shrink-0 rounded-full border border-paper/20 px-4 py-2 text-[13px] text-paper/80 hover:bg-paper hover:text-ink transition-colors"
+              >
+                <span className="font-mono text-paper/40 mr-2">{String(i + 1).padStart(2, '0')}</span>
+                {c.title} {c.titleAccent}
+              </a>
+            ))}
+          </nav>
 
-                    <div className="flex flex-col gap-24">
-                        {/* Restaurant Project */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="h-px flex-1 bg-white/10"></div>
-                                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-widest uppercase italic">01. Restaurante Gourmet</h3>
-                                <div className="h-px flex-1 bg-white/10"></div>
-                            </div>
-                            <div className="bg-[#151515] border border-white/5 rounded-[40px] p-6 md:p-10">
-                                <div className="relative group/web-carousel">
-                                    <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4">
-                                        {['screen.png', 'screen(1).png', 'screen(2).png', 'screen(3).png', 'screen(4).png'].map((img, idx) => (
-                                            <div key={idx} className="shrink-0 w-72 h-72 md:w-96 md:h-96 bg-neutral-900 rounded-3xl overflow-hidden border border-white/10 snap-start hover:border-primary/50 transition-all group relative">
-                                                <img src={`/framer-screenshots/${img}`} alt={`Restaurante ${idx + 1}`} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" loading="lazy" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+          {campaigns.map((c, i) => (
+            <CampaignBlock key={c.slug} c={c} i={i} onOpen={(idx) => open(c.media, idx, `${c.title} ${c.titleAccent}`)} />
+          ))}
+        </Container>
+      </section>
 
-                        {/* Beauty Salon Project */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="h-px flex-1 bg-white/10"></div>
-                                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-widest uppercase italic">02. Salón de Belleza & Spa</h3>
-                                <div className="h-px flex-1 bg-white/10"></div>
-                            </div>
-                            <div className="bg-[#151515] border border-white/5 rounded-[40px] p-6 md:p-10">
-                                <div className="relative group/web-carousel">
-                                    <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4">
-                                        {['unnamed (1).png', 'unnamed (2).png', 'unnamed (3).png', 'unnamed (4).png', 'unnamed (5).png'].map((img, idx) => (
-                                            <div key={idx} className="shrink-0 w-72 h-72 md:w-96 md:h-96 bg-neutral-900 rounded-3xl overflow-hidden border border-white/10 snap-start hover:border-primary/50 transition-all group relative">
-                                                <img src={`/framer-screenshots/${img}`} alt={`Beauty Salon ${idx + 1}`} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" loading="lazy" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      {/* ------------------------------------------------ OTROS PROYECTOS */}
+      <section className="py-24 md:py-32">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-8 mb-12 md:mb-16">
+            <Reveal>
+              <Eyebrow index="02">Más proyectos</Eyebrow>
+              <h2 className="mt-6 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2.25rem,5vw,4.5rem)]">
+                Marcas, branding <Accent>& web</Accent>
+              </h2>
+            </Reveal>
+            <Reveal delay={80}>
+              <div role="tablist" aria-label="Filtrar proyectos" className="flex flex-wrap gap-2">
+                {FILTERS.map((f) => (
+                  <button
+                    key={f}
+                    role="tab"
+                    aria-selected={filter === f}
+                    onClick={() => setFilter(f)}
+                    className={`h-10 rounded-full px-4 text-[14px] transition-colors ${
+                      filter === f ? 'bg-ink text-paper' : 'border border-line text-muted hover:text-ink hover:border-ink/40'
+                    }`}
+                  >
+                    {f}
+                    <span className="ml-1.5 font-mono text-[11px] opacity-50">
+                      {f === 'Todos' ? works.length : works.filter((w) => w.category === f).length}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </Reveal>
+          </div>
 
-                        {/* Portfolio Project */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="h-px flex-1 bg-white/10"></div>
-                                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-widest uppercase italic">03. Portafolio Personal</h3>
-                                <div className="h-px flex-1 bg-white/10"></div>
-                            </div>
-                            <div className="bg-[#151515] border border-white/5 rounded-[40px] p-6 md:p-10">
-                                <div className="relative group/web-carousel">
-                                    <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4">
-                                        {['01-home-desktop.png', '02-about-desktop.png', '03-skills-desktop.png', '04-experience-desktop.png', '05-certifications-desktop.png', '06-contact-desktop.png'].map((img, idx) => (
-                                            <div key={idx} className="shrink-0 w-72 h-72 md:w-96 md:h-96 bg-neutral-900 rounded-3xl overflow-hidden border border-white/10 snap-start hover:border-primary/50 transition-all group relative">
-                                                <img src={`/framer-screenshots/${img}`} alt={`Portfolio ${idx + 1}`} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" loading="lazy" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-14">
+            {list.map((w, i) => (
+              <WorkCard key={w.slug} w={w} index={i} onOpen={() => open(w.media, 0, w.title)} />
+            ))}
+          </div>
+        </Container>
+      </section>
 
-                {/* CTA */}
-                <div className="mt-32 p-10 md:p-16 rounded-[40px] bg-gradient-to-br from-primary/10 to-transparent border border-white/5 text-center relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] rounded-full -mr-32 -mt-32"></div>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-8 relative z-10 transition-transform group-hover:scale-105">¿Tú también quieres destacar?</h2>
-                    <p className="text-gray-400 mb-12 max-w-xl mx-auto relative z-10 text-lg">
-                        Estoy listo para transformar tus ideas en realidades visuales impactantes.
-                    </p>
-                    <a
-                        href="/#/contact"
-                        className="inline-flex h-14 items-center justify-center rounded-full bg-primary px-10 text-black text-sm font-black uppercase tracking-widest transition-all hover:shadow-[0_0_30px_rgba(255,215,0,0.4)] active:scale-95 relative z-10"
-                    >
-                        TRABAJEMOS JUNTOS
-                    </a>
-                </div>
+      {/* ------------------------------------------------ CTA */}
+      <section className="pb-24 md:pb-32">
+        <Container>
+          <Reveal className="rounded-[6px] bg-accent px-6 py-14 md:px-14 md:py-20 grid grid-cols-12 gap-y-8 md:gap-x-10 items-end">
+            <h2 className="col-span-12 md:col-span-8 font-display font-semibold tracking-display leading-[0.95] text-[clamp(2.25rem,5vw,4.5rem)]">
+              ¿Tu marca es <Accent>la siguiente</Accent>?
+            </h2>
+            <div className="col-span-12 md:col-span-4 md:justify-self-end">
+              <Button to="/contact">Trabajemos juntos</Button>
             </div>
+          </Reveal>
+        </Container>
+      </section>
 
-            <style>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
-        </div>
-    );
+      {node}
+    </>
+  );
 };
 
 export default Projects;
