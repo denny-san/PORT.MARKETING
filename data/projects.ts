@@ -241,5 +241,9 @@ export const works: Work[] = [
   },
 ];
 
+/** PDF del CV generado con `npm run cv:pdf` */
+export const CV_PDF = '/cv/Denny-Sanchez-CV.pdf';
+export const CV_PDF_NAME = 'Denny-Sanchez-CV.pdf';
+
 /** Codifica rutas con espacios/acentos para usarlas en src. */
 export const url = (p: string) => encodeURI(p);

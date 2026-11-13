@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "screenshots": "node screenshot-script.js"
+    "screenshots": "node screenshot-script.js",
+    "cv:pdf": "node scripts/generate-cv-pdf.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.34.0",

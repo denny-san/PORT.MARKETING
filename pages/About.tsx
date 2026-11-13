@@ -1,6 +1,6 @@
 import React from 'react';
 import { Accent, Button, Container, Eyebrow, PageHeader, Reveal } from '../components/ui';
-import { url } from '../data/projects';
+import { CV_PDF, CV_PDF_NAME, url } from '../data/projects';
 
 const strengths = ['Creatividad', 'Liderazgo', 'Comunicación efectiva', 'Trabajo en equipo', 'Resolución de problemas'];
 
@@ -61,8 +61,11 @@ const About: React.FC = () => {
               </Reveal>
 
               <Reveal delay={120} className="mt-10 flex flex-wrap gap-3">
-                <Button href="https://drive.google.com/drive/folders/1rG4kTjN6r2ibhOiB6AOv1-YULiR4MvWQ" external>
+                <Button href={CV_PDF} download={CV_PDF_NAME}>
                   Descargar CV
+                </Button>
+                <Button to="/cv" variant="outline">
+                  Ver CV
                 </Button>
                 <Button to="/projects" variant="outline">
                   Ver proyectos

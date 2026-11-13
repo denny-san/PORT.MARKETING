@@ -107,10 +107,11 @@ export const Button: React.FC<{
   href?: string;
   variant?: BtnVariant;
   external?: boolean;
+  download?: string;
   onClick?: () => void;
   className?: string;
   children: React.ReactNode;
-}> = ({ to, href, variant = 'solid', external, onClick, className = '', children }) => {
+}> = ({ to, href, variant = 'solid', external, download, onClick, className = '', children }) => {
   const cls = `${btnBase} ${btnVariants[variant]} ${className}`;
   const content = (
     <>
@@ -121,7 +122,12 @@ export const Button: React.FC<{
   if (to) return <Link to={to} className={cls}>{content}</Link>;
   if (href)
     return (
-      <a href={href} className={cls} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      <a
+        href={href}
+        className={cls}
+        download={download}
+        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
         {content}
       </a>
     );
