@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Reveal, Script, SectionTitle } from '../components/ui';
-import { Cross, Sparkle, Squiggle, Star, Triangle } from '../components/Doodles';
+import { Cross, PaperPlanes, Sparkle, Squiggle, Star, Triangle } from '../components/Doodles';
 import { useLightbox } from '../components/Lightbox';
 import { url } from '../data/projects';
 
@@ -56,7 +56,7 @@ const SoftBadge = () => (
         <textPath href="#soft-circle">{soft}</textPath>
       </text>
     </svg>
-    <div className="absolute inset-[22%] flex flex-col items-center justify-center rounded-full bg-grape text-white shadow-[0_8px_0_#5B3FA8]">
+    <div className="absolute inset-[22%] flex flex-col items-center justify-center rounded-full bg-grape text-white shadow-[0_8px_0_#1D4ED8]">
       <Script className="text-[30px] leading-none">soft</Script>
       <span className="font-display text-[15px] font-extrabold tracking-wide">SKILLS</span>
     </div>
@@ -70,6 +70,7 @@ const Skills: React.FC = () => {
 
   return (
     <div className="relative bg-night pt-16 md:pt-24 pb-24 md:pb-32 overflow-hidden">
+      <PaperPlanes count={4} />
       <div className="pointer-events-none absolute inset-0 text-grape-2/60" aria-hidden>
         <Sparkle className="absolute left-[5%] top-[6%] h-7 w-7 text-cream animate-twinkle" />
         <Cross className="absolute right-[6%] top-[5%] h-7 w-7 animate-float" />
@@ -164,7 +165,7 @@ const Skills: React.FC = () => {
             <div className="mt-6 grid grid-cols-3 gap-3 max-w-[300px] mx-auto">
               {tools.map((t, i) => (
                 <Reveal key={t.n} delay={i * 60} className="text-center">
-                  <div className="mx-auto flex aspect-square w-full max-w-[84px] items-center justify-center rounded-2xl bg-cream text-night shadow-[0_5px_0_#8B5CF6] transition-transform duration-300 hover:-translate-y-1 hover:rotate-3">
+                  <div className="mx-auto flex aspect-square w-full max-w-[84px] items-center justify-center rounded-2xl bg-cream text-night shadow-[0_5px_0_#3B82F6] transition-transform duration-300 hover:-translate-y-1 hover:rotate-3">
                     <span className="font-display text-[26px] font-extrabold tracking-tight">{t.a}</span>
                   </div>
                   <p className="mt-2 text-[11px] font-medium text-cream/70">{t.n}</p>
@@ -183,22 +184,32 @@ const Skills: React.FC = () => {
             </div>
             <Star className="h-9 w-9 text-sun animate-twinkle" />
           </Reveal>
-          <div className="mt-8 -mx-4 px-4 md:mx-0 md:px-0 flex md:grid md:grid-cols-3 lg:grid-cols-6 gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-px-4">
+          <div className="mt-10 -mx-4 px-4 md:mx-0 md:px-0 flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-px-4 pb-4">
             {certs.map((c, i) => (
-              <Reveal key={c.title} delay={i * 60} className="w-[62vw] sm:w-[40vw] md:w-auto shrink-0 snap-start">
+              <Reveal key={c.title} delay={(i % 3) * 90} className="pop w-[86vw] sm:w-[60vw] md:w-auto shrink-0 snap-start">
                 <button
                   onClick={() => open(certMedia, i, 'Certificaciones')}
-                  className="group block w-full rounded-[18px] bg-cream p-2 text-left text-night transition-transform duration-500 hover:-translate-y-1.5 hover:-rotate-1"
+                  className={`group block w-full rounded-[24px] bg-cream p-3 text-left text-night shadow-[0_24px_50px_-24px_rgba(0,0,0,.8)] transition-transform duration-500 hover:-translate-y-2 ${
+                    i % 2 ? 'hover:rotate-1' : 'hover:-rotate-1'
+                  }`}
                 >
-                  <div className="aspect-[4/3] overflow-hidden rounded-[12px] bg-night-3">
-                    <img src={url(c.image)} alt={`Certificado de ${c.title}`} loading="lazy" className="h-full w-full object-cover" />
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[16px] bg-night-3">
+                    <img
+                      src={url(c.image)}
+                      alt={`Certificado de ${c.title}`}
+                      loading="lazy"
+                      className="h-full w-full object-contain bg-white transition-transform duration-700 group-hover:scale-[1.03]"
+                    />
+                    <span className="material-symbols-outlined absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-grape text-white !text-[20px] opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100">
+                      zoom_in
+                    </span>
                   </div>
-                  <div className="px-1.5 pb-1.5 pt-2.5">
-                    <p className="flex justify-between text-[11px] font-semibold text-grape">
-                      <span>{c.issuer}</span>
-                      <span>{c.year}</span>
-                    </p>
-                    <p className="mt-0.5 text-[14px] font-bold leading-snug">{c.title}</p>
+                  <div className="flex items-end justify-between gap-4 px-2 pb-2 pt-4">
+                    <div>
+                      <p className="text-[13px] font-semibold text-grape">{c.issuer}</p>
+                      <p className="mt-0.5 font-display text-[20px] md:text-[22px] font-extrabold leading-tight tracking-tight">{c.title}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-night px-3 py-1 text-[13px] font-bold text-cream">{c.year}</span>
                   </div>
                 </button>
               </Reveal>

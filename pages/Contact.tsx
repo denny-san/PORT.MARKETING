@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container, Reveal, Script } from '../components/ui';
-import { Burst, Cross, Sparkle, Star } from '../components/Doodles';
+import { Burst, Cross, PaperPlanes, Sparkle, Star } from '../components/Doodles';
 import { CV_PDF, CV_PDF_NAME } from '../data/projects';
 
 const EMAIL = 'dennyanalisis@gmail.com';
@@ -28,10 +28,10 @@ const PlaneSpot = () => (
         <path d="M40 260c40-6 70-30 92-60" fill="none" />
       </g>
       {/* avión */}
-      <g strokeLinejoin="round" strokeWidth="6" stroke="#1C1B20">
+      <g strokeLinejoin="round" strokeWidth="6" stroke="#0E1525">
         <path d="M120 230 330 110 230 300 200 240Z" fill="#F3EEE2" />
-        <path d="M200 240 330 110 175 262Z" fill="#A78BFA" />
-        <path d="M120 230 200 240 175 262Z" fill="#8B5CF6" />
+        <path d="M200 240 330 110 175 262Z" fill="#60A5FA" />
+        <path d="M120 230 200 240 175 262Z" fill="#3B82F6" />
       </g>
       {/* líneas de velocidad */}
       <g stroke="#F3EEE2" strokeWidth="5" strokeLinecap="round">
@@ -58,6 +58,7 @@ const Contact: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden bg-night-2 pt-20 md:pt-28 pb-24 md:pb-32">
+      <PaperPlanes count={4} />
       <div className="pointer-events-none absolute inset-0 text-grape-2/60" aria-hidden>
         <Cross className="absolute left-[5%] top-[10%] h-7 w-7 animate-float" />
         <Star className="absolute right-[6%] bottom-[12%] h-7 w-7 text-sun animate-twinkle" />

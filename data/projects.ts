@@ -35,7 +35,7 @@ const THEMES: Record<string, Theme> = {
   portafolio: { bg: 'linear-gradient(135deg,#1F2937 0%,#111827 100%)', accent: '#FFD700' },
 };
 
-export const themeOf = (slug: string): Theme => THEMES[slug] ?? { bg: '#302D38', accent: '#A78BFA' };
+export const themeOf = (slug: string): Theme => THEMES[slug] ?? { bg: '#1F2B48', accent: '#60A5FA' };
 
 export interface Work extends Campaign {
   category: 'Redes sociales' | 'Branding' | 'Web';

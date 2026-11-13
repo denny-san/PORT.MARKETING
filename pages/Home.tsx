@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Reveal, Script, scrollToId } from '../components/ui';
-import { CloudEdge, Cross, Drop, Ring, Scribble, Sparkle, Squiggle, Star, Triangle } from '../components/Doodles';
+import { CloudEdge, Cross, Drop, PaperPlanes, Ring, Scribble, Sparkle, Squiggle, Star, Triangle } from '../components/Doodles';
 
 const disciplines = ['Diseño gráfico', 'Branding', 'Social media', 'Diseño web'];
 
@@ -35,6 +35,8 @@ const Home: React.FC = () => {
         />
       </svg>
 
+      <PaperPlanes count={5} />
+
       <div ref={layer} className="pointer-events-none absolute inset-0 text-grape-2" aria-hidden>
         <Sparkle className="absolute left-[8%] top-[16%] h-8 w-8 text-cream animate-twinkle" />
         <Star className="absolute right-[12%] top-[14%] h-7 w-7 text-sun animate-twinkle [animation-delay:1s]" />
@@ -60,14 +62,14 @@ const Home: React.FC = () => {
         {/* Logotipo PORTAFOLIO */}
         <Reveal delay={120} className="relative mt-10 md:mt-14 select-none">
           <h1 className="relative leading-none" aria-label="Portafolio de Denny Sánchez">
-            <span className="block font-display font-black tracking-[-0.05em] text-[clamp(4.2rem,16vw,13rem)] text-cream [text-shadow:0_8px_0_#302D38]">
+            <span className="block font-display font-black uppercase tracking-[-0.05em] text-[clamp(4.2rem,16vw,13rem)] text-cream [text-shadow:0_8px_0_#1F2B48]">
               PORT<span className="text-grape">A</span>
             </span>
-            <span className="block -mt-[0.32em] ml-[0.6em] font-script font-bold text-[clamp(4.6rem,17vw,14rem)] text-cream -rotate-3 [text-shadow:0_8px_0_#302D38]">
-              folio
+            <span className="block -mt-[0.18em] ml-[0.5em] font-display font-black uppercase tracking-[-0.04em] text-[clamp(4.2rem,16vw,13rem)] text-grape -rotate-3 [text-shadow:0_8px_0_#F3EEE2]">
+              FOLIO
             </span>
           </h1>
-          <span className="absolute -right-2 md:-right-10 top-[4%] rotate-[14deg] rounded-xl bg-grape px-3 py-1 font-display text-[clamp(.95rem,1.8vw,1.4rem)] font-extrabold text-white shadow-[0_6px_0_#5B3FA8]">
+          <span className="absolute -right-2 md:-right-10 top-[4%] rotate-[14deg] rounded-xl bg-grape px-3 py-1 font-display text-[clamp(.95rem,1.8vw,1.4rem)] font-extrabold text-white shadow-[0_6px_0_#1D4ED8]">
             2026
           </span>
           <Sparkle className="absolute -left-6 md:-left-12 bottom-[22%] h-8 w-8 md:h-12 md:w-12 text-sun animate-twinkle" />
@@ -85,7 +87,7 @@ const Home: React.FC = () => {
               {d}
             </button>
           ))}
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-cream text-night font-script text-[26px] font-bold -rotate-6 shadow-[0_5px_0_#8B5CF6]">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-cream text-night font-script text-[26px] font-bold -rotate-6 shadow-[0_5px_0_#3B82F6]">
             DS
           </span>
           {disciplines.slice(2).map((d) => (

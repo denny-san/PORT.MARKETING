@@ -92,6 +92,38 @@ export const CloudEdge: React.FC<P> = ({ className, style }) => (
   </svg>
 );
 
+/** Avión de papel con estela punteada. */
+export const PaperPlane = (p: P) => (
+  <svg viewBox="0 0 160 60" className={p.className} style={p.style} aria-hidden>
+    <path d="M4 44c18-2 34-8 50-18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeDasharray="2 8" opacity=".7" />
+    <g strokeLinejoin="round" strokeWidth="2.6" stroke="currentColor">
+      <path d="M70 34 150 6 112 52 102 38Z" fill="currentColor" fillOpacity=".95" />
+      <path d="M102 38 150 6 95 46Z" fill="currentColor" fillOpacity=".55" />
+    </g>
+  </svg>
+);
+
+const PLANES = [
+  { top: '8%', w: 110, dur: 26, delay: -2, o: 0.35 },
+  { top: '32%', w: 70, dur: 34, delay: -14, o: 0.22 },
+  { top: '58%', w: 130, dur: 30, delay: -21, o: 0.3 },
+  { top: '80%', w: 80, dur: 38, delay: -7, o: 0.2 },
+  { top: '20%', w: 56, dur: 44, delay: -30, o: 0.18 },
+];
+
+/** Capa de aviones de papel volando de fondo. */
+export const PaperPlanes: React.FC<{ count?: number; tone?: string }> = ({ count = 4, tone = 'text-cream' }) => (
+  <div className={`pointer-events-none absolute inset-0 overflow-hidden ${tone}`} aria-hidden>
+    {PLANES.slice(0, count).map((pl, i) => (
+      <PaperPlane
+        key={i}
+        className="plane"
+        style={{ top: pl.top, width: pl.w, opacity: pl.o, animationDuration: `${pl.dur}s`, animationDelay: `${pl.delay}s` }}
+      />
+    ))}
+  </div>
+);
+
 /** Conjunto de doodles flotantes posicionados en las esquinas de un bloque. */
 export const DoodleField: React.FC<{ tone?: string; dense?: boolean }> = ({ tone = 'text-grape-2', dense }) => (
   <div className={`pointer-events-none absolute inset-0 overflow-hidden ${tone}`} aria-hidden>

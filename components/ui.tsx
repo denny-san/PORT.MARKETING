@@ -77,7 +77,7 @@ type BtnVariant = 'solid' | 'outline' | 'accent' | 'light' | 'grape' | 'cream';
 const btnBase =
   'group inline-flex h-12 items-center justify-center gap-2.5 rounded-full px-6 text-[15px] font-semibold transition-all duration-300 active:scale-[.97]';
 const btnVariants: Record<BtnVariant, string> = {
-  grape: 'bg-grape text-white hover:bg-grape-2 shadow-[0_8px_30px_-8px_rgba(139,92,246,.7)]',
+  grape: 'bg-grape text-white hover:bg-grape-2 shadow-[0_8px_30px_-8px_rgba(59,130,246,.7)]',
   cream: 'bg-cream text-night hover:bg-white',
   light: 'border-2 border-cream/25 text-cream hover:border-cream hover:bg-cream hover:text-night',
   /* Variantes del documento CV (fondo claro) */

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container, Reveal, Script } from '../components/ui';
-import { Burst, CloudEdge, Cross, Dots, Ring, Sparkle, Triangle } from '../components/Doodles';
+import { Burst, CloudEdge, Cross, Dots, PaperPlanes, Ring, Sparkle, Triangle } from '../components/Doodles';
 import { CV_PDF, CV_PDF_NAME, url } from '../data/projects';
 
 const socials = [
@@ -38,6 +38,7 @@ const ProfileCard = () => (
 
 const About: React.FC = () => (
   <div className="relative bg-night-2 pt-20 md:pt-28 pb-28 md:pb-36 overflow-hidden">
+    <PaperPlanes count={3} />
     <div className="pointer-events-none absolute inset-0 text-grape-2/70" aria-hidden>
       <Cross className="absolute left-[4%] top-[10%] h-7 w-7" />
       <Ring className="absolute right-[6%] top-[14%] h-9 w-9 animate-float-slow" />
